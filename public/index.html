@@ -7,9 +7,9 @@
     <title>CRM סוכנות נסיעות פרימיום</title>
     <style>
         :root {
-            --bg-color: #f1f5f9;
+            --bg-color: #f8fafc;
             --card-bg: #ffffff;
-            --card-border: #cbd5e1;
+            --card-border: #e2e8f0;
             --text-color: #0f172a;
             --text-muted: #64748b;
             --primary-color: #2563eb;
@@ -19,6 +19,8 @@
             --danger-color: #ef4444;
             --danger-hover: #dc2626;
             --input-bg: #f8fafc;
+            --badge-bg: #dbeafe;
+            --badge-text: #1e40af;
         }
 
         body {
@@ -40,34 +42,40 @@
             align-items: center;
             margin-bottom: 25px;
             background: var(--card-bg);
-            padding: 15px 25px;
-            border-radius: 12px;
+            padding: 18px 30px;
+            border-radius: 16px;
             border: 1px solid var(--card-border);
-            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.03);
         }
 
         header h1 {
             color: var(--text-color);
             margin: 0;
-            font-size: 22px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .header-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
+        }
+
+        .btn-base {
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
         }
 
         .install-btn {
             background: var(--primary-color);
             color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            transition: background 0.2s;
         }
 
         .install-btn:hover {
@@ -75,47 +83,42 @@
         }
 
         .logout-btn {
-            background: var(--danger-color);
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            transition: background 0.2s;
+            background: #fee2e2;
+            color: var(--danger-color);
         }
 
         .logout-btn:hover {
-            background: var(--danger-hover);
+            background: var(--danger-color);
+            color: white;
         }
 
-        /* מסך התחברות */
+        /* מסך התחברות יוקרתי */
         #loginScreen {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;
+            height: 85vh;
         }
 
         .login-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            padding: 30px;
-            border-radius: 12px;
+            padding: 40px;
+            border-radius: 20px;
             width: 100%;
-            max-width: 400px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            max-width: 420px;
+            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.05);
             text-align: center;
         }
 
         .login-card h2 {
             margin-top: 0;
             color: var(--text-color);
+            font-size: 24px;
         }
 
         .login-card .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: right;
         }
 
@@ -125,63 +128,70 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
             margin-bottom: 25px;
         }
 
         .stat-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            padding: 20px;
-            border-radius: 12px;
+            padding: 22px;
+            border-radius: 16px;
             text-align: center;
-            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            box-shadow: 0 2px 4px rgb(0 0 0 / 0.02);
         }
 
         .stat-card span {
             display: block;
             color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 5px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
         }
 
         .stat-card strong {
-            font-size: 24px;
+            font-size: 28px;
             color: var(--text-color);
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.02);
             margin-bottom: 25px;
         }
 
-        .tabs {
+        /* עיצוב טאבים מודרני ונקי */
+        .tabs-header {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            background: #f1f5f9;
+            padding: 6px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            gap: 6px;
         }
 
         .tab-btn {
             flex: 1;
             padding: 12px;
-            border: 1px solid var(--card-border);
-            background: #e2e8f0;
+            border: none;
+            background: transparent;
             color: var(--text-muted);
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 14px;
             border-radius: 8px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s ease;
         }
 
         .tab-btn.active {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
+            background: white;
+            color: var(--primary-color);
+            box-shadow: 0 2px 4px rgb(0 0 0 / 0.05);
         }
 
         .form-section {
@@ -194,9 +204,9 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
         .form-group {
@@ -206,20 +216,21 @@
 
         label {
             font-weight: 600;
-            margin-bottom: 5px;
-            font-size: 14px;
+            margin-bottom: 8px;
+            font-size: 13px;
             color: var(--text-muted);
         }
 
         input,
         select,
         textarea {
-            padding: 10px;
+            padding: 12px;
             background: var(--input-bg);
             border: 1px solid var(--card-border);
             color: var(--text-color);
-            border-radius: 6px;
+            border-radius: 10px;
             font-size: 14px;
+            transition: all 0.2s;
         }
 
         input:focus,
@@ -227,24 +238,26 @@
         textarea:focus {
             outline: none;
             border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         textarea {
             resize: vertical;
-            height: 80px;
+            height: 90px;
         }
 
         button.submit-btn {
             background: var(--primary-color);
             color: white;
             border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 6px;
+            padding: 14px 20px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 10px;
             cursor: pointer;
             width: 100%;
             transition: background 0.2s;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
         button.submit-btn:hover {
@@ -253,12 +266,12 @@
 
         .search-box {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
+            padding: 14px;
+            margin-bottom: 25px;
             background: var(--input-bg);
             border: 1px solid var(--card-border);
             color: var(--text-color);
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 14px;
         }
 
@@ -267,42 +280,52 @@
         }
 
         .client-card {
-            background: #f8fafc;
+            background: #ffffff;
             border: 1px solid var(--card-border);
-            padding: 20px;
-            border-radius: 10px;
+            padding: 22px;
+            border-radius: 14px;
             margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            box-shadow: 0 2px 4px rgb(0 0 0 / 0.01);
+            transition: transform 0.2s;
+        }
+
+        .client-card:hover {
+            border-color: #cbd5e1;
         }
 
         .client-info h3 {
-            margin: 0 0 5px 0;
+            margin: 0 0 8px 0;
             color: var(--text-color);
-            font-size: 18px;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .client-info p {
-            margin: 4px 0;
+            margin: 5px 0;
             font-size: 14px;
             color: var(--text-muted);
         }
 
         .actions-btns {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
         .whatsapp-btn {
             background: var(--whatsapp-color);
             color: white;
             border: none;
-            padding: 8px 14px;
-            border-radius: 6px;
+            padding: 10px 16px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 13px;
-            font-weight: bold;
+            font-weight: 700;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
         }
 
         .whatsapp-btn:hover {
@@ -310,47 +333,69 @@
         }
 
         .delete-btn {
-            background: var(--danger-color);
-            color: white;
+            background: #fee2e2;
+            color: var(--danger-color);
             border: none;
-            padding: 8px 14px;
-            border-radius: 6px;
+            padding: 10px 14px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 13px;
+            font-weight: 600;
         }
 
         .delete-btn:hover {
-            background: var(--danger-hover);
+            background: var(--danger-color);
+            color: white;
+        }
+
+        /* התראת טיסה קרובה (24 שעות) */
+        .flight-alert-badge {
+            background: #fef3c7;
+            color: #d97706;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- מסך התחברות לסוכן -->
+    <!-- מסך התחברות חדש ומאובטח לפי שם משתמש וסיסמה -->
     <div id="loginScreen">
         <div class="login-card">
-            <h2>כניסת סוכנים ✈️</h2>
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">הזן את שם המשתמש שלך כדי להיכנס
-                לאזור האישי שלך</p>
+            <h2>כניסת סוכנים מאובטחת ✈️</h2>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px;">הזן שם משתמש וסיסמה אישית לכניסה
+                לאזור שלך</p>
             <form onsubmit="loginUser(event)">
                 <div class="form-group">
-                    <label>שם משתמש / סוכן</label>
-                    <input type="text" id="usernameInput" required placeholder="לדוגמה: ori, agent1...">
+                    <label>שם משתמש</label>
+                    <input type="text" id="usernameInput" required placeholder="לדוגמה: ori">
                 </div>
-                <button type="submit" class="submit-btn" style="margin-top: 10px;">התחבר למערכת</button>
+                <div class="form-group">
+                    <label>סיסמה אישית</label>
+                    <input type="password" id="passwordInput" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="submit-btn" style="margin-top: 10px;">כניסה למערכת</button>
             </form>
+            <p style="color: var(--text-muted); font-size: 12px; margin-top: 20px;">* סוכן חדש? הקלד שם וסיסמה לבחירתך
+                והמערכת תיצור לך אזור אישי.</p>
         </div>
     </div>
 
     <!-- האפליקציה הראשית -->
     <div id="appContent" class="container">
         <header>
-            <h1>CRM סוכנות נסיעות פרימיום ✈️ (<span id="currentAgentName" style="color: var(--primary-color);"></span>)
+            <h1>CRM סוכנות נסיעות פרימיום ✈️ <span id="currentAgentName"
+                    style="color: var(--primary-color); font-size: 16px; background: #eff6ff; padding: 4px 12px; border-radius: 8px;"></span>
             </h1>
             <div class="header-actions">
-                <button id="installAppBtn" class="install-btn" onclick="installApp()">📥 הורד אפליקציה</button>
-                <button class="logout-btn" onclick="logoutUser()">התנתק</button>
+                <button id="installAppBtn" class="btn-base install-btn" onclick="installApp()">📥 הורד אפליקציה</button>
+                <button class="btn-base logout-btn" onclick="logoutUser()">התנתק</button>
             </div>
         </header>
 
@@ -374,7 +419,8 @@
         </div>
 
         <div class="card">
-            <div class="tabs">
+            <!-- טאבים מעוצבים ונקיים במקום כפתורים זרוקים -->
+            <div class="tabs-header">
                 <button class="tab-btn active" onclick="switchTab('standard')">ניהול הזמנה רגיל</button>
                 <button class="tab-btn" onclick="switchTab('summary')">סיכום הזמנה מפורט</button>
             </div>
@@ -532,7 +578,19 @@
         function loginUser(event) {
             event.preventDefault();
             const username = document.getElementById('usernameInput').value.trim();
-            if (!username) return;
+            const password = document.getElementById('passwordInput').value.trim();
+            if (!username || !password) return;
+
+            // בדיקת אבטחה בסיסית של סיסמה שמורה במכשיר או רישום ראשוני
+            const savedPass = localStorage.getItem(`pass_${username}`);
+            if (savedPass && savedPass !== password) {
+                alert('סיסמה שגויה עבור משתמש זה!');
+                return;
+            }
+            if (!savedPass) {
+                localStorage.setItem(`pass_${username}`, password);
+            }
+
             currentAgent = username;
             localStorage.setItem('crm_current_agent', username);
             showApp();
@@ -544,12 +602,13 @@
             document.getElementById('appContent').style.display = 'none';
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
         }
 
         function showApp() {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('appContent').style.display = 'block';
-            document.getElementById('currentAgentName').innerText = currentAgent;
+            document.getElementById('currentAgentName</u>').innerText = `סוכן: ${currentAgent}`;
             loadClients();
         }
 
@@ -661,6 +720,15 @@
             document.getElementById('statPackages').innerText = packages;
         }
 
+        // בדיקה האם הטיסה היא בתוך 24 שעות מהרגע הנוכחי
+        function isFlightWithin24Hours(dateStr) {
+            if (!dateStr) return false;
+            const flightTime = new Date(dateStr).getTime();
+            const now = new Date().getTime();
+            const diffHours = (flightTime - now) / (1000 * 60 * 60);
+            return diffHours >= 0 && diffHours <= 24;
+        }
+
         function sendWhatsApp(index) {
             const c = allClients[index];
             let text = '';
@@ -688,10 +756,17 @@
                 return;
             }
 
-            container.innerHTML = clients.map((c, idx) => `
+            container.innerHTML = clients.map((c, idx) => {
+                const flightDate = c.formType === 'summary' ? c.startDate : c.departureDate;
+                const show24hAlert = isFlightWithin24Hours(flightDate);
+
+                return `
                 <div class="client-card">
                     <div class="client-info">
-                        <h3>${c.clientName || 'לקוח'} (${c.formType === 'summary' ? 'סיכום הזמנה' : 'הזמנה רגילה'})</h3>
+                        <h3>
+                            ${c.clientName || 'לקוח'} (${c.formType === 'summary' ? 'סיכום הזמנה' : 'הזמנה רגילה'})
+                            ${show24hAlert ? '<span class="flight-alert-badge">⏰ טיסה בעוד פחות מ-24 שעות!</span>' : ''}
+                        </h3>
                         <p><strong>טלפון:</strong> ${c.phone || 'לא צויין'}</p>
                         <p><strong>יעד/מלון:</strong> ${c.destination || c.hotelName || 'לא צויין'}</p>
                         <p><strong>עלות/פרטים:</strong> ${c.totalCost || c.notes || '-'}</p>
@@ -701,7 +776,8 @@
                         <button class="delete-btn" onclick="deleteClient('${c.id}')">מחק</button>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         let deferredPrompt;
