@@ -561,21 +561,15 @@
                 text = `שלום ${c.clientName || 'לקוח'} 👋\nמצורפים פרטי ההזמנה הרגילה שלך:\n\nסוג הזמנה: ${c.bookingType || '-'}\nPNR: ${c.pnr || '-'}\nמספר טיסה: ${c.flightNumber || '-'}\nיציאה: ${c.departureDate || '-'} | חזרה: ${c.returnDate || '-'}\nמלון: ${c.hotelName || '-'}\nהערות: ${c.notes || '-'}\n\nחופשה מהנה ונעימה! 🌴`;
             }
 
-            // הפתרון המושלם: גם מעתיק אוטומטית ללוח וגם פותח את וואטסאפ ללא שגיאות Mac!
+            // הפתרון המהיר והבטוח ביותר למק: מעתיק לזיכרון ופותח חלון וואטסאפ נקי בלי שגיאות כתובת
             navigator.clipboard.writeText(text).then(() => {
                 const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
-                if (phoneNum) {
-                    window.open(`https://wa.me/${phoneNum}`, '_blank');
-                } else {
-                    window.open(`https://web.whatsapp.com`, '_blank');
-                }
-            }).catch(err => {
+                // פתיחת וואטסאפ בצורה נקייה לחלוטין ללא שגיאות כתובת ב־Mac
+                const url = phoneNum ? `https://wa.me/${phoneNum}` : `https://web.whatsapp.com`;
+                window.open(url, '_blank');
+            }).catch(() => {
                 const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
-                if (phoneNum) {
-                    window.open(`https://wa.me/${phoneNum}`, '_blank');
-                } else {
-                    window.open(`https://web.whatsapp.com`, '_blank');
-                }
+                window.open(phoneNum ? `https://wa.me/${phoneNum}` : `https://web.whatsapp.com`, '_blank');
             });
         }
 
