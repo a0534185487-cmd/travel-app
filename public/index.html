@@ -484,6 +484,11 @@
                 const result = await res.json();
                 if (result.success) {
                     form.reset();
+                    // רענון התאריכים האוטומטיים לאחר איפוס
+                    const today = new Date().toISOString().split('T')[0];
+                    document.querySelectorAll('.auto-date').forEach(input => {
+                        input.value = today;
+                    });
                     loadClients();
                 } else {
                     alert('שגיאה בשמירה');
@@ -493,6 +498,10 @@
                 allClients.unshift(data);
                 localStorage.setItem('fallback_clients', JSON.stringify(allClients));
                 form.reset();
+                const today = new Date().toISOString().split('T')[0];
+                document.querySelectorAll('.auto-date').forEach(input => {
+                    input.value = today;
+                });
                 renderClients(allClients);
                 updateStats();
             }
@@ -545,45 +554,20 @@
             let text = '';
             if (c.formType === 'summary') {
                 const datesFormatted = (c.startDate && c.endDate) ? `${c.startDate} - ${c.endDate}` : (c.datesSummary || '-');
-                text = `*סיכום הזמנה עבור: ${c.clientName || 'לקוח'}*
-טלפון: ${c.phone || '-'}
-----------------------------------
-*תאריכים:* ${datesFormatted}
-*יעד:* ${c.destination || '-'}
-*חברת תעופה:* ${c.airline || '-'}
-*שעת המראה הלוך:* ${c.depFlightTime || '-'}
-*שעת המראה חזור:* ${c.retFlightTime || '-'}
-*מזוודות מה כן כולל:* ${c.luggageDetails || '-'}
-*שמות הנוסעים לפי דרכון באנגלית:*
-${c.passengersPassports || '-'}
-----------------------------------
-*שם מלון:* ${c.hotelName || '-'}
-*עיר המלון:* ${c.hotelCity || '-'}
-*הרכב החדר:* ${c.roomComposition || '-'}
-*בסיס פנסיון:* ${c.boardBasis || '-'}
-*שם חדר:* ${c.roomName || '-'}
-*תנאי ביטול ההזמנה:* ${c.cancellationTerms || '-'}
-----------------------------------
-⚠️ *אין באחריותי על שינוי הלו"ז של הטיסה*
-💰 *סה"כ עלות ההזמנה:* ${c.totalCost || '-'}`;
+                text = `שלום ${c.clientName || 'לקוח'} 👋\nמצורפים פרטי ההזמנה שלך:\n\n✈️ טיסה:\n- הזמנה/PNR: ${c.airline || '-'}\n- מסלול: ${c.destination || '-'}\n- תאריך: ${datesFormatted}\n- שעות הלוך/חזור: ${c.depFlightTime || '-'} / ${c.retFlightTime || '-'}\n- מזוודות: ${c.luggageDetails || '-'}\n\n🏨 מלון: ${c.hotelName || '-'}\n- תאריכים: ${datesFormatted}\n- עיר: ${c.hotelCity || '-'}\n- הרכב חדר: ${c.roomComposition || '-'}\n- פנסיון: ${c.boardBasis || '-'}\n- סוג חדר: ${c.roomName || '-'}\n\n👥 שמות הנוסעים בדרכון:\n${c.passengersPassports || '-'}\n\n❌ תנאי ביטול: ${c.cancellationTerms || '-'}\n💰 סה"כ עלות: ${c.totalCost || '-'}\n\nחופשה מהנה ונעימה! 🌴`;
             } else {
-                text = `*פרטי הזמנה רגילה: ${c.clientName || 'לקוח'}*
-טלפון: ${c.phone || '-'}
-סוג הזמנה: ${c.bookingType || '-'}
-PNR: ${c.pnr || '-'}
-מספר טיסה: ${c.flightNumber || '-'}
-יציאה: ${c.departureDate || '-'} | חזרה: ${c.returnDate || '-'}
-מלון: ${c.hotelName || '-'}
-הערות: ${c.notes || '-'}`;
+                text = `שלום ${c.clientName || 'לקוח'} 👋\nמצורפים פרטי ההזמנה הרגילה שלך:\n\nסוג הזמנה: ${c.bookingType || '-'}\nPNR: ${c.pnr || '-'}\nמספר טיסה: ${c.flightNumber || '-'}\nיציאה: ${c.departureDate || '-'} | חזרה: ${c.returnDate || '-'}\nמלון: ${c.hotelName || '-'}\nהערות: ${c.notes || '-'}\n\nחופשה מהנה ונעימה! 🌴`;
             }
 
-            // העתקה אוטומטית ללוח ופתיחת וואטסאפ ווב / אפליקציה באופן נקי ללא שגיאות
-            navigator.clipboard.writeText(text).then(() => {
-                alert('✅ הטקסט הועתק אוטומטית לזיכרון!\n\nחלון וואטסאפ ייפתח כעת. כל שעליך לעשות הוא ללחוץ על חלון השיחה ולהדביק (Cmd + V).');
-                window.open('https://web.whatsapp.com', '_blank');
-            }).catch(err => {
-                alert('שגיאה בהעתקת הטקסט ללוח.');
-            });
+            // ניקוי מספר הטלפון וקידוד מדויק של הטקסט כך שייפתח ישר בוואטסאפ בלי שגיאות Mac
+            const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
+            const encodedText = encodeURIComponent(text);
+
+            if (phoneNum) {
+                window.open(`https://api.whatsapp.com/send?phone=${phoneNum}&text=${encodedText}`, '_blank');
+            } else {
+                window.open(`https://wa.me/?text=${encodedText}`, '_blank');
+            }
         }
 
         function renderClients(clients) {
