@@ -31,11 +31,30 @@
         header {
             text-align: center;
             margin-bottom: 30px;
+            position: relative;
         }
 
         header h1 {
             color: var(--primary-color);
             margin-bottom: 5px;
+        }
+
+        .install-btn {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .install-btn:hover {
+            background: #059669;
         }
 
         .card {
@@ -153,6 +172,26 @@
             color: #64748b;
         }
 
+        .actions-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .whatsapp-btn {
+            background: #25d366;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .whatsapp-btn:hover {
+            background: #20ba5a;
+        }
+
         .delete-btn {
             background: #ef4444;
             color: white;
@@ -173,6 +212,8 @@
 
     <div class="container">
         <header>
+            <button id="installAppBtn" class="install-btn" style="display:none;" onclick="installApp()">📥 הורד
+                אפליקציה</button>
             <h1>מערכת ניהול הזמנות וסיכומים</h1>
             <p>מערכת מרכזית לסוכני נסיעות</p>
         </header>
@@ -213,11 +254,11 @@
                     </div>
                     <div class="form-group">
                         <label>תאריך יציאה</label>
-                        <input type="date" name="departureDate">
+                        <input type="date" name="departureDate" class="auto-date">
                     </div>
                     <div class="form-group">
                         <label>תאריך חזרה</label>
-                        <input type="date" name="returnDate">
+                        <input type="date" name="returnDate" class="auto-date">
                     </div>
                     <div class="form-group">
                         <label>שם המלון</label>
@@ -231,7 +272,7 @@
                 <button type="submit" class="submit-btn" style="margin-top: 15px;">שמור הזמנה</button>
             </form>
 
-            <!-- טופס סיכום הזמנה -->
+            <!-- טופס סיכום הזמנה מפורט -->
             <form id="summaryForm" class="form-section" onsubmit="saveClient(event, 'summary')">
                 <input type="hidden" name="formType" value="summary">
                 <div class="grid">
@@ -244,25 +285,61 @@
                         <input type="text" name="phone">
                     </div>
                     <div class="form-group">
-                        <label>יעד</label>
-                        <input type="text" name="destination">
+                        <label>תאריכים</label>
+                        <input type="text" name="datesSummary" placeholder="לדוגמה: 12/08/2026 - 18/08/2026">
                     </div>
                     <div class="form-group">
-                        <label>תאריכים (סיכום)</label>
-                        <input type="text" name="datesSummary" placeholder="לדוגמה: 12/08 - 18/08">
+                        <label>יעד</label>
+                        <input type="text" name="destination" placeholder="לדוגמה: פריז, צרפת">
                     </div>
                     <div class="form-group">
                         <label>חברת תעופה</label>
                         <input type="text" name="airline">
                     </div>
                     <div class="form-group">
-                        <label>עלות כוללת</label>
-                        <input type="text" name="totalCost" placeholder="לדוגמה: $1,200">
+                        <label>שעת המראה הלוך</label>
+                        <input type="text" name="depFlightTime" placeholder="לדוגמה: 08:30">
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>פרטי טיסות ושעות</label>
-                    <textarea name="notes" placeholder="שעות הלוך וחזור, פרטי כבודה..."></textarea>
+                    <div class="form-group">
+                        <label>שעת המראה חזור</label>
+                        <input type="text" name="retFlightTime" placeholder="לדוגמה: 19:45">
+                    </div>
+                    <div class="form-group">
+                        <label>מזוודות מה כן כולל</label>
+                        <input type="text" name="luggageDetails" placeholder="לדוגמה: טרולי + מזוודה 23 קג">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>שמות הנוסעים לפי דרכון באנגלית (שורה לכל נוסע)</label>
+                        <textarea name="passengersPassports" placeholder="ISRAEL ISRAELI&#10;SARAH ISRAELI"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>שם מלון</label>
+                        <input type="text" name="hotelName">
+                    </div>
+                    <div class="form-group">
+                        <label>עיר המלון</label>
+                        <input type="text" name="hotelCity">
+                    </div>
+                    <div class="form-group">
+                        <label>הרכב החדר</label>
+                        <input type="text" name="roomComposition" placeholder="לדוגמה: 2 מבוגרים + ילד">
+                    </div>
+                    <div class="form-group">
+                        <label>בסיס פנסיון</label>
+                        <input type="text" name="boardBasis" placeholder="לדוגמה: לינה וארוחת בוקר / הכל כלול">
+                    </div>
+                    <div class="form-group">
+                        <label>שם חדר</label>
+                        <input type="text" name="roomName" placeholder="לדוגמה: חדר זוגי סטנדרט עם נוף לעיר">
+                    </div>
+                    <div class="form-group">
+                        <label>תנאי ביטול ההזמנה</label>
+                        <input type="text" name="cancellationTerms" placeholder="לדוגמה: ללא דמי ביטול עד 14 יום לפני">
+                    </div>
+                    <div class="form-group">
+                        <label>סה"כ עלות ההזמנה</label>
+                        <input type="text" name="totalCost" placeholder="לדוגמה: $1,500">
+                    </div>
                 </div>
                 <button type="submit" class="submit-btn" style="margin-top: 15px;">שמור סיכום הזמנה</button>
             </form>
@@ -275,6 +352,14 @@
     </div>
 
     <script>
+        // מילוי אוטומטי של תאריכים ברירת מחדל להיום
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelectorAll('.auto-date').forEach(input => {
+                if (!input.value) input.value = today;
+            });
+        });
+
         function switchTab(type) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.form-section').forEach(sec => sec.classList.remove('active'));
@@ -321,7 +406,6 @@
                     alert('שגיאה בשמירה');
                 }
             } catch (e) {
-                // גיבוי מקומי במידה והשרת נם
                 data.id = Date.now().toString();
                 let local = JSON.parse(localStorage.getItem('fallback_clients') || '[]');
                 local.unshift(data);
@@ -345,6 +429,34 @@
             }
         }
 
+        function sendWhatsApp(c) {
+            const text = `*סיכום הזמנה עבור: ${c.clientName || 'לקוח'}*
+טלפון: ${c.phone || '-'}
+----------------------------------
+*תאריכים:* ${c.datesSummary || c.departureDate + ' - ' + c.returnDate || '-'}
+*יעד:* ${c.destination || c.hotelName || '-'}
+*חברת תעופה:* ${c.airline || '-'}
+*שעת המראה הלוך:* ${c.depFlightTime || '-'}
+*שעת המראה חזור:* ${c.retFlightTime || '-'}
+*מזוודות מה כן כולל:* ${c.luggageDetails || '-'}
+*שמות הנוסעים לפי דרכון באנגלית:*
+${c.passengersPassports || '-'}
+----------------------------------
+*שם מלון:* ${c.hotelName || '-'}
+*עיר המלון:* ${c.hotelCity || '-'}
+*הרכב החדר:* ${c.roomComposition || '-'}
+*בסיס פנסיון:* ${c.boardBasis || '-'}
+*שם חדר:* ${c.roomName || '-'}
+*תנאי ביטול ההזמנה:* ${c.cancellationTerms || '-'}
+----------------------------------
+⚠️ *אין באחריותי על שינוי הלו"ז של הטיסה*
+💰 *סה"כ עלות ההזמנה:* ${c.totalCost || '-'}`;
+
+            const encoded = encodeURIComponent(text);
+            const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
+            window.open(`https://wa.me/${phoneNum}?text=${encoded}`, '_blank');
+        }
+
         function renderClients(clients) {
             const container = document.getElementById('clientsContainer');
             if (!clients.length) {
@@ -353,19 +465,43 @@
             }
 
             container.innerHTML = clients.map(c => `
-            <div class="client-card">
-                <div class="client-info">
-                    <h3>${c.clientName || 'לקוח'} (${c.formType === 'summary' ? 'סיכום הזמנה' : 'הזמנה רגילה'})</h3>
-                    <p><strong>טלפון:</strong> ${c.phone || 'לא צויין'}</p>
-                    <p><strong>פרטים:</strong> ${c.destination || c.hotelName || c.pnr || c.notes || 'אין פרטים נוספים'}</p>
-                    <p><strong>עלות/הערות:</strong> ${c.totalCost || c.notes || '-'}</p>
+                <div class="client-card">
+                    <div class="client-info">
+                        <h3>${c.clientName || 'לקוח'} (${c.formType === 'summary' ? 'סיכום הזמנה' : 'הזמנה רגילה'})</h3>
+                        <p><strong>טלפון:</strong> ${c.phone || 'לא צויין'}</p>
+                        <p><strong>יעד/מלון:</strong> ${c.destination || c.hotelName || 'לא צויין'}</p>
+                        <p><strong>עלות:</strong> ${c.totalCost || c.notes || '-'}</p>
+                    </div>
+                    <div class="actions-btns">
+                        <button class="whatsapp-btn" onclick='sendWhatsApp(${JSON.stringify(c)})'>💬 וואטסאפ</button>
+                        <button class="delete-btn" onclick="deleteClient('${c.id}')">מחק</button>
+                    </div>
                 </div>
-                <button class="delete-btn" onclick="deleteClient('${c.id}')">מחק</button>
-            </div>
-        `).join('');
+            `).join('');
         }
 
-        // טעינת רשימה בעליית הדף
+        // ניהול הורדת אפליקציה (PWA Prompt)
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installAppBtn').style.display = 'block';
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        document.getElementById('installAppBtn').style.display = 'none';
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                alert('ניתן להתקין את האפליקציה דרך תפריט הדפדפן (שלושת הנקודות) ובחר ב-"הוסף למסך הבית" או "Install App".');
+            }
+        }
+
         loadClients();
     </script>
 
