@@ -145,6 +145,15 @@
             background: var(--primary-hover);
         }
 
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
         .clients-list {
             margin-top: 30px;
         }
@@ -224,7 +233,7 @@
                 <button class="tab-btn" onclick="switchTab('summary')">סיכום הזמנה מפורט</button>
             </div>
 
-            <!-- טופס רגיל -->
+            <!-- טופס רגיל (ניהול לקוח) -->
             <form id="standardForm" class="form-section active" onsubmit="saveClient(event, 'standard')">
                 <input type="hidden" name="formType" value="standard">
                 <div class="grid">
@@ -269,7 +278,7 @@
                     <label>הערות</label>
                     <textarea name="notes"></textarea>
                 </div>
-                <button type="submit" class="submit-btn" style="margin-top: 15px;">שמור הזמנה</button>
+                <button type="submit" class="submit-btn" style="margin-top: 15px;">שמור הזמנה רגילה</button>
             </form>
 
             <!-- טופס סיכום הזמנה מפורט -->
@@ -347,12 +356,15 @@
 
         <div class="card clients-list">
             <h2>הזמנות וסיכומים שמורים</h2>
+            <input type="text" id="searchInput" class="search-box" placeholder="🔍 חפש לפי שם לקוח, טלפון או יעד..."
+                oninput="filterClients()">
             <div id="clientsContainer">טוען נתונים...</div>
         </div>
     </div>
 
     <script>
-        // מילוי אוטומטי של תאריכים ברירת מחדל להיום
+        let allClients = [];
+
         document.addEventListener('DOMContentLoaded', () => {
             const today = new Date().toISOString().split('T')[0];
             document.querySelectorAll('.auto-date').forEach(input => {
@@ -376,12 +388,12 @@
         async function loadClients() {
             try {
                 const res = await fetch('/api/clients');
-                const clients = await res.json();
-                renderClients(clients);
+                allClients = await res.json();
+                renderClients(allClients);
             } catch (e) {
                 console.error('שגיאה בטעינת נתונים מהשרת, טוען מגיבוי מקומי');
-                const local = JSON.parse(localStorage.getItem('fallback_clients') || '[]');
-                renderClients(local);
+                allClients = JSON.parse(localStorage.getItem('fallback_clients') || '[]');
+                renderClients(allClients);
             }
         }
 
@@ -407,11 +419,10 @@
                 }
             } catch (e) {
                 data.id = Date.now().toString();
-                let local = JSON.parse(localStorage.getItem('fallback_clients') || '[]');
-                local.unshift(data);
-                localStorage.setItem('fallback_clients', JSON.stringify(local));
+                allClients.unshift(data);
+                localStorage.setItem('fallback_clients', JSON.stringify(allClients));
                 form.reset();
-                renderClients(local);
+                renderClients(allClients);
                 alert('הנתונים נשמרו מקומית בהצלחה!');
             }
         }
@@ -422,19 +433,31 @@
                 await fetch(`/api/clients/${id}`, { method: 'DELETE' });
                 loadClients();
             } catch (e) {
-                let local = JSON.parse(localStorage.getItem('fallback_clients') || '[]');
-                local = local.filter(c => c.id !== id);
-                localStorage.setItem('fallback_clients', JSON.stringify(local));
-                renderClients(local);
+                allClients = allClients.filter(c => c.id !== id);
+                localStorage.setItem('fallback_clients', JSON.stringify(allClients));
+                renderClients(allClients);
             }
         }
 
+        function filterClients() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allClients.filter(c => {
+                const name = (c.clientName || '').toLowerCase();
+                const phone = (c.phone || '').toLowerCase();
+                const dest = (c.destination || c.hotelName || '').toLowerCase();
+                return name.includes(query) || phone.includes(query) || dest.includes(query);
+            });
+            renderClients(filtered);
+        }
+
         function sendWhatsApp(c) {
-            const text = `*סיכום הזמנה עבור: ${c.clientName || 'לקוח'}*
+            let text = '';
+            if (c.formType === 'summary') {
+                text = `*סיכום הזמנה עבור: ${c.clientName || 'לקוח'}*
 טלפון: ${c.phone || '-'}
 ----------------------------------
-*תאריכים:* ${c.datesSummary || c.departureDate + ' - ' + c.returnDate || '-'}
-*יעד:* ${c.destination || c.hotelName || '-'}
+*תאריכים:* ${c.datesSummary || '-'}
+*יעד:* ${c.destination || '-'}
 *חברת תעופה:* ${c.airline || '-'}
 *שעת המראה הלוך:* ${c.depFlightTime || '-'}
 *שעת המראה חזור:* ${c.retFlightTime || '-'}
@@ -451,10 +474,22 @@ ${c.passengersPassports || '-'}
 ----------------------------------
 ⚠️ *אין באחריותי על שינוי הלו"ז של הטיסה*
 💰 *סה"כ עלות ההזמנה:* ${c.totalCost || '-'}`;
+            } else {
+                text = `*פרטי הזמנה רגילה: ${c.clientName || 'לקוח'}*
+טלפון: ${c.phone || '-'}
+סוג הזמנה: ${c.bookingType || '-'}
+PNR: ${c.pnr || '-'}
+מספר טיסה: ${c.flightNumber || '-'}
+יציאה: ${c.departureDate || '-'} | חזרה: ${c.returnDate || '-'}
+מלון: ${c.hotelName || '-'}
+הערות: ${c.notes || '-'}`;
+            }
 
             const encoded = encodeURIComponent(text);
             const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
-            window.open(`https://wa.me/${phoneNum}?text=${encoded}`, '_blank');
+            // שימוש בכתובת API אוניברסלית לוואטסאפ שתעבוד תמיד
+            const url = phoneNum ? `https://api.whatsapp.com/send?phone=${phoneNum}&text=${encoded}` : `https://api.whatsapp.com/send?text=${encoded}`;
+            window.open(url, '_blank');
         }
 
         function renderClients(clients) {
@@ -470,7 +505,7 @@ ${c.passengersPassports || '-'}
                         <h3>${c.clientName || 'לקוח'} (${c.formType === 'summary' ? 'סיכום הזמנה' : 'הזמנה רגילה'})</h3>
                         <p><strong>טלפון:</strong> ${c.phone || 'לא צויין'}</p>
                         <p><strong>יעד/מלון:</strong> ${c.destination || c.hotelName || 'לא צויין'}</p>
-                        <p><strong>עלות:</strong> ${c.totalCost || c.notes || '-'}</p>
+                        <p><strong>עלות/פרטים:</strong> ${c.totalCost || c.notes || '-'}</p>
                     </div>
                     <div class="actions-btns">
                         <button class="whatsapp-btn" onclick='sendWhatsApp(${JSON.stringify(c)})'>💬 וואטסאפ</button>
@@ -480,7 +515,6 @@ ${c.passengersPassports || '-'}
             `).join('');
         }
 
-        // ניהול הורדת אפליקציה (PWA Prompt)
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
