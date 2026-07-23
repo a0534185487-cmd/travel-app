@@ -52,6 +52,12 @@
             font-size: 22px;
         }
 
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
         .install-btn {
             background: var(--primary-color);
             color: white;
@@ -66,6 +72,55 @@
 
         .install-btn:hover {
             background: var(--primary-hover);
+        }
+
+        .logout-btn {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: var(--danger-hover);
+        }
+
+        /* מסך התחברות */
+        #loginScreen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            text-align: center;
+        }
+
+        .login-card h2 {
+            margin-top: 0;
+            color: var(--text-color);
+        }
+
+        .login-card .form-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        #appContent {
+            display: none;
         }
 
         .stats-grid {
@@ -272,10 +327,31 @@
 
 <body>
 
-    <div class="container">
+    <!-- מסך התחברות לסוכן -->
+    <div id="loginScreen">
+        <div class="login-card">
+            <h2>כניסת סוכנים ✈️</h2>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">הזן את שם המשתמש שלך כדי להיכנס
+                לאזור האישי שלך</p>
+            <form onsubmit="loginUser(event)">
+                <div class="form-group">
+                    <label>שם משתמש / סוכן</label>
+                    <input type="text" id="usernameInput" required placeholder="לדוגמה: ori, agent1...">
+                </div>
+                <button type="submit" class="submit-btn" style="margin-top: 10px;">התחבר למערכת</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- האפליקציה הראשית -->
+    <div id="appContent" class="container">
         <header>
-            <h1>CRM סוכנות נסיעות פרימיום ✈️</h1>
-            <button id="installAppBtn" class="install-btn" onclick="installApp()">📥 הורד אפליקציה</button>
+            <h1>CRM סוכנות נסיעות פרימיום ✈️ (<span id="currentAgentName" style="color: var(--primary-color);"></span>)
+            </h1>
+            <div class="header-actions">
+                <button id="installAppBtn" class="install-btn" onclick="installApp()">📥 הורד אפליקציה</button>
+                <button class="logout-btn" onclick="logoutUser()">התנתק</button>
+            </div>
         </header>
 
         <div class="stats-grid">
@@ -429,7 +505,7 @@
         </div>
 
         <div class="card clients-list">
-            <h2>הזמנות וסיכומים שמורים</h2>
+            <h2>הזמנות וסיכומים שמורים שלך</h2>
             <input type="text" id="searchInput" class="search-box" placeholder="🔍 חפש לפי שם לקוח, טלפון או יעד..."
                 oninput="filterClients()">
             <div id="clientsContainer">טוען נתונים...</div>
@@ -438,14 +514,44 @@
 
     <script>
         let allClients = [];
+        let currentAgent = '';
 
         document.addEventListener('DOMContentLoaded', () => {
+            const savedAgent = localStorage.getItem('crm_current_agent');
+            if (savedAgent) {
+                currentAgent = savedAgent;
+                showApp();
+            }
+
             const today = new Date().toISOString().split('T')[0];
             document.querySelectorAll('.auto-date').forEach(input => {
                 if (!input.value) input.value = today;
             });
-            loadClients();
         });
+
+        function loginUser(event) {
+            event.preventDefault();
+            const username = document.getElementById('usernameInput').value.trim();
+            if (!username) return;
+            currentAgent = username;
+            localStorage.setItem('crm_current_agent', username);
+            showApp();
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('crm_current_agent');
+            currentAgent = '';
+            document.getElementById('appContent').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('usernameInput').value = '';
+        }
+
+        function showApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContent').style.display = 'block';
+            document.getElementById('currentAgentName').innerText = currentAgent;
+            loadClients();
+        }
 
         function switchTab(type) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -462,11 +568,12 @@
 
         async function loadClients() {
             try {
-                const res = await fetch('/api/clients');
+                const res = await fetch(`/api/clients?agent=${encodeURIComponent(currentAgent)}`);
                 allClients = await res.json();
                 renderClients(allClients);
             } catch (e) {
-                allClients = JSON.parse(localStorage.getItem('fallback_clients') || '[]');
+                const storageKey = `fallback_clients_${currentAgent}`;
+                allClients = JSON.parse(localStorage.getItem(storageKey) || '[]');
                 renderClients(allClients);
             }
             updateStats();
@@ -477,6 +584,7 @@
             const form = event.target;
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
+            data.agent = currentAgent;
 
             try {
                 const res = await fetch('/api/clients', {
@@ -498,7 +606,8 @@
             } catch (e) {
                 data.id = Date.now().toString();
                 allClients.unshift(data);
-                localStorage.setItem('fallback_clients', JSON.stringify(allClients));
+                const storageKey = `fallback_clients_${currentAgent}`;
+                localStorage.setItem(storageKey, JSON.stringify(allClients));
                 form.reset();
                 const today = new Date().toISOString().split('T')[0];
                 document.querySelectorAll('.auto-date').forEach(input => {
@@ -521,7 +630,8 @@
                 }
             } catch (e) {
                 allClients = allClients.filter(c => c.id !== id);
-                localStorage.setItem('fallback_clients', JSON.stringify(allClients));
+                const storageKey = `fallback_clients_${currentAgent}`;
+                localStorage.setItem(storageKey, JSON.stringify(allClients));
                 renderClients(allClients);
                 updateStats();
             }
