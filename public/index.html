@@ -577,15 +577,12 @@ PNR: ${c.pnr || '-'}
 הערות: ${c.notes || '-'}`;
             }
 
+            // העתקה אוטומטית ללוח ופתיחת וואטסאפ ווב / אפליקציה באופן נקי ללא שגיאות
             navigator.clipboard.writeText(text).then(() => {
-                const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
-                if (phoneNum) {
-                    window.open(`https://wa.me/${phoneNum}`, '_blank');
-                } else {
-                    window.open(`https://web.whatsapp.com`, '_blank');
-                }
+                alert('✅ הטקסט הועתק אוטומטית לזיכרון!\n\nחלון וואטסאפ ייפתח כעת. כל שעליך לעשות הוא ללחוץ על חלון השיחה ולהדביק (Cmd + V).');
+                window.open('https://web.whatsapp.com', '_blank');
             }).catch(err => {
-                window.open(`https://web.whatsapp.com`, '_blank');
+                alert('שגיאה בהעתקת הטקסט ללוח.');
             });
         }
 
