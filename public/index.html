@@ -577,12 +577,16 @@ PNR: ${c.pnr || '-'}
 הערות: ${c.notes || '-'}`;
             }
 
-            const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
-            const encodedText = encodeURIComponent(text);
-
-            // פתיחת וואטסאפ ישירות עם הטקסט בתוך שדה ההודעה
-            const whatsappUrl = phoneNum ? `https://wa.me/${phoneNum}?text=${encodedText}` : `https://web.whatsapp.com/?text=${encodedText}`;
-            window.open(whatsappUrl, '_blank');
+            navigator.clipboard.writeText(text).then(() => {
+                const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
+                if (phoneNum) {
+                    window.open(`https://wa.me/${phoneNum}`, '_blank');
+                } else {
+                    window.open(`https://web.whatsapp.com`, '_blank');
+                }
+            }).catch(err => {
+                window.open(`https://web.whatsapp.com`, '_blank');
+            });
         }
 
         function renderClients(clients) {
