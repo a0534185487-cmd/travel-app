@@ -4,103 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel CRM Pro - מערכת ניהול סוכנים</title>
+    <title>מערכת ניהול הזמנות - סוכנים</title>
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --accent: #06b6d4;
-            --bg-main: #f3f4f6;
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
             --card-bg: #ffffff;
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
-            --border: #e5e7eb;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning-bg: #fef3c7;
-            --warning-border: #f59e0b;
-            --warning-text: #92400e;
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            --radius: 16px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, sans-serif;
+            --text-color: #1e293b;
+            --border-color: #cbd5e1;
         }
 
         body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
             padding: 20px;
-            direction: rtl;
         }
 
         .container {
-            max-width: 1250px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
         header {
             text-align: center;
-            margin-bottom: 25px;
-            padding: 25px;
-            background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
-            color: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            margin-bottom: 30px;
         }
 
         header h1 {
-            font-size: 26px;
+            color: var(--primary-color);
             margin-bottom: 5px;
         }
 
-        /* קופסת התראות 24 שעות */
-        #alertsContainer {
-            margin-bottom: 20px;
-        }
-
-        .alert-box {
-            background-color: var(--warning-bg);
-            border: 1px solid var(--warning-border);
-            color: var(--warning-text);
-            padding: 15px 20px;
-            border-radius: var(--radius);
-            margin-bottom: 10px;
-            font-weight: 600;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            margin-bottom: 25px;
         }
 
         .tabs {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
-            justify-content: center;
         }
 
         .tab-btn {
-            background: white;
-            border: 1px solid var(--border);
-            padding: 12px 24px;
-            font-size: 15px;
-            font-weight: 700;
-            border-radius: 12px;
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: #e2e8f0;
+            color: var(--text-color);
+            font-weight: bold;
+            border-radius: 8px;
             cursor: pointer;
-            color: var(--text-muted);
-            transition: all 0.2s;
+            transition: 0.2s;
         }
 
         .tab-btn.active {
-            background: var(--primary);
+            background: var(--primary-color);
             color: white;
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
         }
 
         .form-section {
@@ -111,143 +77,94 @@
             display: block;
         }
 
-        .grid-layout {
+        .grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-
-        @media(max-width: 950px) {
-            .grid-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 25px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            margin-bottom: 20px;
-        }
-
-        .card h2 {
-            font-size: 18px;
-            margin-bottom: 18px;
-            color: var(--primary);
-            border-bottom: 2px solid #f3f4f6;
-            padding-bottom: 8px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
         }
 
         .form-group {
-            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
         }
 
         label {
-            display: block;
             font-weight: 600;
-            font-size: 13px;
             margin-bottom: 5px;
-            color: var(--text-main);
+            font-size: 14px;
         }
 
         input,
         select,
         textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
             font-size: 14px;
-            background: #fff;
         }
 
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--primary);
+        textarea {
+            resize: vertical;
+            height: 80px;
         }
 
-        .row-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .btn {
-            background-color: var(--primary);
+        button.submit-btn {
+            background: var(--primary-color);
             color: white;
             border: none;
             padding: 12px 20px;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
             cursor: pointer;
             width: 100%;
             transition: background 0.2s;
         }
 
-        .btn:hover {
-            background-color: var(--primary-hover);
+        button.submit-btn:hover {
+            background: var(--primary-hover);
         }
 
-        .btn-whatsapp {
-            background-color: #25d366;
-            margin-top: 6px;
+        .clients-list {
+            margin-top: 30px;
         }
 
-        .btn-whatsapp:hover {
-            background-color: #1ebd59;
-        }
-
-        .btn-danger {
-            background-color: var(--danger);
-            padding: 5px 10px;
-            font-size: 12px;
-            width: auto;
-        }
-
-        .client-item {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            position: relative;
-        }
-
-        .client-header {
+        .client-card {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-right: 5px solid var(--primary-color);
+            box-shadow: 0 2px 4px rgb(0 0 0 / 0.05);
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 6px;
+            align-items: flex-start;
         }
 
-        .client-name {
-            font-weight: 700;
-            font-size: 16px;
-            color: var(--primary);
+        .client-info h3 {
+            margin: 0 0 5px 0;
+            color: var(--primary-color);
         }
 
-        .badge {
-            background: #e0f2fe;
-            color: #0369a1;
-            padding: 3px 8px;
-            border-radius: 6px;
+        .client-info p {
+            margin: 3px 0;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
             font-size: 12px;
-            font-weight: 700;
         }
 
-        .client-details {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            line-height: 1.5;
-            white-space: pre-line;
+        .delete-btn:hover {
+            background: #dc2626;
         }
     </style>
 </head>
@@ -256,453 +173,200 @@
 
     <div class="container">
         <header>
-            <h1>✈️ Travel CRM Pro</h1>
-            <p>ניהול סוכנות חכם — בחר אופציית עבודה מועדפת</p>
+            <h1>מערכת ניהול הזמנות וסיכומים</h1>
+            <p>מערכת מרכזית לסוכני נסיעות</p>
         </header>
 
-        <!-- אזור התראות יוצאות לדרך (24 שעות הקרובות) -->
-        <div id="alertsContainer"></div>
+        <div class="card">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('standard')">ניהול הזמנה רגיל</button>
+                <button class="tab-btn" onclick="switchTab('summary')">סיכום הזמנה מפורט</button>
+            </div>
 
-        <!-- טאבים למעבר בין האופציות -->
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab(1)">אופציה 1: ניהול הזמנות רגיל (טיסה/מלון)</button>
-            <button class="tab-btn" onclick="switchTab(2)">אופציה 2: סיכום הזמנה מלא ללקוח</button>
+            <!-- טופס רגיל -->
+            <form id="standardForm" class="form-section active" onsubmit="saveClient(event, 'standard')">
+                <input type="hidden" name="formType" value="standard">
+                <div class="grid">
+                    <div class="form-group">
+                        <label>שם הלקוח</label>
+                        <input type="text" name="clientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>טלפון</label>
+                        <input type="text" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label>סוג הזמנה</label>
+                        <select name="bookingType">
+                            <option value="flight_hotel">טיסה + מלון</option>
+                            <option value="flight">טיסה בלבד</option>
+                            <option value="hotel">מלון בלבד</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>מספר PNR</label>
+                        <input type="text" name="pnr">
+                    </div>
+                    <div class="form-group">
+                        <label>מספר טיסה</label>
+                        <input type="text" name="flightNumber">
+                    </div>
+                    <div class="form-group">
+                        <label>תאריך יציאה</label>
+                        <input type="date" name="departureDate">
+                    </div>
+                    <div class="form-group">
+                        <label>תאריך חזרה</label>
+                        <input type="date" name="returnDate">
+                    </div>
+                    <div class="form-group">
+                        <label>שם המלון</label>
+                        <input type="text" name="hotelName">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>הערות</label>
+                    <textarea name="notes"></textarea>
+                </div>
+                <button type="submit" class="submit-btn" style="margin-top: 15px;">שמור הזמנה</button>
+            </form>
+
+            <!-- טופס סיכום הזמנה -->
+            <form id="summaryForm" class="form-section" onsubmit="saveClient(event, 'summary')">
+                <input type="hidden" name="formType" value="summary">
+                <div class="grid">
+                    <div class="form-group">
+                        <label>שם הלקוח</label>
+                        <input type="text" name="clientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>טלפון</label>
+                        <input type="text" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label>יעד</label>
+                        <input type="text" name="destination">
+                    </div>
+                    <div class="form-group">
+                        <label>תאריכים (סיכום)</label>
+                        <input type="text" name="datesSummary" placeholder="לדוגמה: 12/08 - 18/08">
+                    </div>
+                    <div class="form-group">
+                        <label>חברת תעופה</label>
+                        <input type="text" name="airline">
+                    </div>
+                    <div class="form-group">
+                        <label>עלות כוללת</label>
+                        <input type="text" name="totalCost" placeholder="לדוגמה: $1,200">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>פרטי טיסות ושעות</label>
+                    <textarea name="notes" placeholder="שעות הלוך וחזור, פרטי כבודה..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn" style="margin-top: 15px;">שמור סיכום הזמנה</button>
+            </form>
         </div>
 
-        <div class="grid-layout">
-            <!-- אזור טפסים (שמאל) -->
-            <div>
-                <!-- אופציה 1 -->
-                <div id="section1" class="form-section active">
-                    <div class="card">
-                        <h2>📋 אופציה 1: ניהול הזמנה רגיל</h2>
-                        <form id="formStandard" onsubmit="saveData(event, 'standard')">
-                            <div class="form-group">
-                                <label>סוג ההזמנה:</label>
-                                <select id="stdBookingType" onchange="toggleFlightHotelFields()">
-                                    <option value="flight_hotel">טיסה + מלון</option>
-                                    <option value="flight">טיסה בלבד</option>
-                                    <option value="hotel">מלון בלבד</option>
-                                </select>
-                            </div>
-
-                            <div class="row-inputs">
-                                <div class="form-group">
-                                    <label>שם הלקוח:</label>
-                                    <input type="text" id="stdClientName" required placeholder="אורי כהן">
-                                </div>
-                                <div class="form-group">
-                                    <label>טלפון (לוואטסאפ):</label>
-                                    <input type="text" id="stdPhone" placeholder="0500000000">
-                                </div>
-                            </div>
-
-                            <div id="flightFields">
-                                <div class="row-inputs">
-                                    <div class="form-group">
-                                        <label>קוד PNR:</label>
-                                        <input type="text" id="stdPnr" placeholder="ABC123מתאים">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>חברת תעופה:</label>
-                                        <input type="text" id="stdAirline" placeholder="אל על / ארקיע">
-                                    </div>
-                                </div>
-                                <div class="form-group" style="margin-top: 10px;">
-                                    <label>מספר טיסה:</label>
-                                    <input type="text" id="stdFlightNumber" placeholder="LY315">
-                                </div>
-                            </div>
-
-                            <div class="row-inputs">
-                                <div class="form-group">
-                                    <label>תאריך יציאה:</label>
-                                    <input type="date" id="stdDepDate">
-                                </div>
-                                <div class="form-group">
-                                    <label>תאריך חזרה:</label>
-                                    <input type="date" id="stdRetDate">
-                                </div>
-                            </div>
-
-                            <div id="hotelFields">
-                                <div class="row-inputs">
-                                    <div class="form-group">
-                                        <label>שם המלון:</label>
-                                        <input type="text" id="stdHotelName" placeholder="Herods Palace">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>בסיס אירוח:</label>
-                                        <select id="stdBoardBasis">
-                                            <option value="הכל כלול">הכל כלול</option>
-                                            <option value="ארוחת בוקר">ארוחת בוקר</option>
-                                            <option value="חצי פנסיון">חצי פנסיון</option>
-                                            <option value="לינה בלבד">לינה בלבד</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label>הערות מיוחדות:</label>
-                                <textarea id="stdNotes" rows="2" placeholder="בקשות מיוחדות..."></textarea>
-                            </div>
-
-                            <button type="submit" class="btn">💾 שמור הזמנה רגילה</button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- אופציה 2 -->
-                <div id="section2" class="form-section">
-                    <div class="card">
-                        <h2>✨ אופציה 2: סיכום הזמנה מלא ללקוח</h2>
-                        <form id="formSummary" onsubmit="saveData(event, 'summary')">
-                            <div class="row-inputs">
-                                <div class="form-group">
-                                    <label>שם הלקוח:</label>
-                                    <input type="text" id="sumClientName" required placeholder="אורי כהן">
-                                </div>
-                                <div class="form-group">
-                                    <label>טלפון (לוואטסאפ):</label>
-                                    <input type="text" id="sumPhone" required placeholder="0500000000">
-                                </div>
-                            </div>
-
-                            <div class="row-inputs">
-                                <div class="form-group">
-                                    <label>תאריך יציאה (הלוך):</label>
-                                    <input type="date" id="sumDepDate">
-                                </div>
-                                <div class="form-group">
-                                    <label>תאריך חזרה:</label>
-                                    <input type="date" id="sumRetDate">
-                                </div>
-                            </div>
-
-                            <div class="row-inputs">
-                                <div class="form-group">
-                                    <label>יעד:</label>
-                                    <input type="text" id="sumDestination" placeholder="לרנקה, קפריסין">
-                                </div>
-                                <div class="form-group">
-                                    <label>חברת תעופה:</label>
-                                    <input type="text" id="sumAirline" placeholder="אל על / ארקיע">
-                                </div>
-                            </div>
-
-                            <div class="row-inputs">
-                                <div class="form-group">
-                                    <label>שעת המראה הלוך:</label>
-                                    <input type="text" id="sumDepTime" placeholder="06:30">
-                                </div>
-                                <div class="form-group">
-                                    <label>שעת המראה חזור:</label>
-                                    <input type="text" id="sumRetTime" placeholder="18:45">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label>מזוודות מה כן כולל:</label>
-                                <input type="text" id="sumLuggage" placeholder="תיק גב + מזוודת טרולי 20 ק״ג">
-                            </div>
-
-                            <div class="form-group">
-                                <label>שמות הנוסעים לפי דרכון באנגלית (שורה לכל נוסע):</label>
-                                <textarea id="sumPassengers" rows="3"
-                                    placeholder="COHEN/URI MR&#10;COHEN/TALI MRS"></textarea>
-                            </div>
-
-                            <div class="row-inputs">
-                                <div class="form-group">
-                                    <label>שם מלון:</label>
-                                    <input type="text" id="sumHotelName" placeholder="Sunrise Oasis">
-                                </div>
-                                <div class="form-group">
-                                    <label>עיר המלון:</label>
-                                    <input type="text" id="sumHotelCity" placeholder="פרוטאראס">
-                                </div>
-                            </div>
-
-                            <div class="row-inputs">
-                                <div class="form-group">
-                                    <label>הרכב החדר:</label>
-                                    <input type="text" id="sumRoomComp" placeholder="2 מבוגרים + 2 ילדים">
-                                </div>
-                                <div class="form-group">
-                                    <label>בסיס פנסיון:</label>
-                                    <input type="text" id="sumBoard" placeholder="הכל כלול / חצי פנסיון">
-                                </div>
-                            </div>
-
-                            <div class="row-inputs">
-                                <div class="form-group">
-                                    <label>שם חדר:</label>
-                                    <input type="text" id="sumRoomName" placeholder="חדר משפחה נוף לים">
-                                </div>
-                                <div class="form-group">
-                                    <label>סה"כ עלות ההזמנה:</label>
-                                    <input type="text" id="sumCost" placeholder="4,500 ₪">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label>תנאי ביטול ההזמנה:</label>
-                                <textarea id="sumCancellation" rows="2"
-                                    placeholder="דמי ביטול עד 14 יום לפני היציאה..."></textarea>
-                            </div>
-
-                            <button type="submit" class="btn">💾 שמור והפק סיכום הזמנה</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- רשימת לקוחות והזמנות שמורות (ימין) -->
-            <div>
-                <div class="card">
-                    <h2>📋 תיקי לקוחות והזמנות פעילות</h2>
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <input type="text" id="searchInput" oninput="filterClients()"
-                            placeholder="🔍 חפש לפי שם לקוח או מספר טלפון...">
-                    </div>
-                    <div id="clientsList">
-                        <p style="text-align: center; color: var(--text-muted); padding: 20px;">טוען נתונים...</p>
-                    </div>
-                </div>
-            </div>
+        <div class="card clients-list">
+            <h2>הזמנות וסיכומים שמורים</h2>
+            <div id="clientsContainer">טוען נתונים...</div>
         </div>
     </div>
 
     <script>
-        let allClients = [];
-
-        window.onload = function () { loadClients(); };
-
-        function switchTab(tabNum) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
-
-            if (tabNum === 1) {
-                document.querySelectorAll('.tab-btn')[0].classList.add('active');
-                document.getElementById('section1').classList.add('active');
-            } else {
-                document.querySelectorAll('.tab-btn')[1].classList.add('active');
-                document.getElementById('section2').classList.add('active');
-            }
-        }
-
-        function toggleFlightHotelFields() {
-            const type = document.getElementById('stdBookingType').value;
-            document.getElementById('flightFields').style.display = (type === 'hotel') ? 'none' : 'block';
-            document.getElementById('hotelFields').style.display = (type === 'flight') ? 'none' : 'block';
-        }
-
-        async function saveData(e, type) {
-            e.preventDefault();
-            let payload = { formType: type };
+        function switchTab(type) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.form-section').forEach(sec => sec.classList.remove('active'));
 
             if (type === 'standard') {
-                payload.clientName = document.getElementById('stdClientName').value;
-                payload.phone = document.getElementById('stdPhone').value;
-                payload.bookingType = document.getElementById('stdBookingType').value;
-                payload.pnr = document.getElementById('stdPnr').value;
-                payload.airline = document.getElementById('stdAirline').value;
-                payload.flightNumber = document.getElementById('stdFlightNumber').value;
-                payload.departureDate = document.getElementById('stdDepDate').value;
-                payload.returnDate = document.getElementById('stdRetDate').value;
-                payload.hotelName = document.getElementById('stdHotelName').value;
-                payload.boardBasis = document.getElementById('stdBoardBasis').value;
-                payload.notes = document.getElementById('stdNotes').value;
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('standardForm').classList.add('active');
             } else {
-                payload.clientName = document.getElementById('sumClientName').value;
-                payload.phone = document.getElementById('sumPhone').value;
-
-                const depD = document.getElementById('sumDepDate').value;
-                const retD = document.getElementById('sumRetDate').value;
-                payload.departureDate = depD; // בשביל ההתראה
-                payload.datesSummary = (depD && retD) ? `${depD} עד ${retD}` : (depD || retD || '---');
-
-                payload.destination = document.getElementById('sumDestination').value;
-                payload.airline = document.getElementById('sumAirline').value;
-                payload.depFlightTime = document.getElementById('sumDepTime').value;
-                payload.retFlightTime = document.getElementById('sumRetTime').value;
-                payload.luggageDetails = document.getElementById('sumLuggage').value;
-                payload.passengersPassports = document.getElementById('sumPassengers').value;
-                payload.hotelName = document.getElementById('sumHotelName').value;
-                payload.hotelCity = document.getElementById('sumHotelCity').value;
-                payload.roomComposition = document.getElementById('sumRoomComp').value;
-                payload.boardBasis = document.getElementById('sumBoard').value;
-                payload.roomName = document.getElementById('sumRoomName').value;
-                payload.totalCost = document.getElementById('sumCost').value;
-                payload.cancellationTerms = document.getElementById('sumCancellation').value;
-            }
-
-            try {
-                const res = await fetch('/api/clients', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                if (data.success) {
-                    alert('הנתונים נשמרו בהצלחה!');
-                    e.target.reset();
-                    loadClients();
-                } else {
-                    alert('שגיאה בשמירה');
-                }
-            } catch (err) {
-                alert('שגיאת תקשורת מול השרת');
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('summaryForm').classList.add('active');
             }
         }
 
         async function loadClients() {
             try {
                 const res = await fetch('/api/clients');
-                allClients = await res.json();
-                checkUpcomingAlerts(allClients);
-                renderClients(allClients);
+                const clients = await res.json();
+                renderClients(clients);
             } catch (e) {
-                console.error(e);
+                console.error('שגיאה בטעינת נתונים מהשרת, טוען מגיבוי מקומי');
+                const local = JSON.parse(localStorage.getItem('fallback_clients') || '[]');
+                renderClients(local);
             }
         }
 
-        // בדיקת התראות ל-24 השעות הקרובות
-        function checkUpcomingAlerts(clients) {
-            const alertsContainer = document.getElementById('alertsContainer');
-            alertsContainer.innerHTML = '';
+        async function saveClient(event, type) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
 
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-
-            clients.forEach(c => {
-                if (c.departureDate) {
-                    const depDate = new Date(c.departureDate);
-                    depDate.setHours(0, 0, 0, 0);
-
-                    // אם תאריך היציאה הוא היום או מחר
-                    if (depDate.getTime() === today.getTime() || depDate.getTime() === tomorrow.getTime()) {
-                        const whenText = depDate.getTime() === today.getTime() ? 'היום!' : 'מחר!';
-                        const box = document.createElement('div');
-                        box.className = 'alert-box';
-                        box.innerHTML = `
-                        <span>⚠️ התראה: הלקוח <strong>${c.clientName}</strong> יוצא לטיסה/חופשה ${whenText} (${c.departureDate}) | יעד/פרטים: ${c.destination || c.hotelName || c.bookingType || 'הזמנה פעילה'}</span>
-                        <span style="font-size:12px; background:white; padding:4px 8px; border-radius:6px; color:var(--warning-text);">נא לוודא שהכל מוכן</span>
-                    `;
-                        alertsContainer.appendChild(box);
-                    }
-                }
-            });
-        }
-
-        function filterClients() {
-            const query = document.getElementById('searchInput').value.trim().toLowerCase();
-            if (!query) {
-                renderClients(allClients);
-                return;
-            }
-            const filtered = allClients.filter(c => {
-                const nameMatch = c.clientName && c.clientName.toLowerCase().includes(query);
-                const phoneMatch = c.phone && c.phone.toLowerCase().includes(query);
-                return nameMatch || phoneMatch;
-            });
-            renderClients(filtered);
-        }
-
-        function renderClients(clients) {
-            const container = document.getElementById('clientsList');
-
-            if (clients.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 20px;">לא נמצאו הזמנות תואמות.</p>';
-                return;
-            }
-
-            container.innerHTML = '';
-            clients.forEach(c => {
-                const item = document.createElement('div');
-                item.className = 'client-item';
-
-                let detailsHTML = '';
-                let waText = '';
-
-                if (c.formType === 'summary') {
-                    detailsHTML = `
-                    <strong>יעד:</strong> ${c.destination || '---'} | <strong>תאריכים:</strong> ${c.datesSummary || '---'}<br>
-                    <strong>חברת תעופה:</strong> ${c.airline || '---'} (הלוך: ${c.depFlightTime || '---'} | חזור: ${c.retFlightTime || '---'})<br>
-                    <strong>מזוודות:</strong> ${c.luggageDetails || '---'}<br>
-                    <strong>נוסעים לפי דרכון:</strong><br>${(c.passengersPassports || '').replace(/\n/g, '<br>')}<br>
-                    <strong>מלון:</strong> ${c.hotelName || '---'} (${c.hotelCity || ''}) - ${c.roomName || ''}<br>
-                    <strong>הרכב ובסיס:</strong> ${c.roomComposition || ''} | ${c.boardBasis || ''}<br>
-                    <strong>תנאי ביטול:</strong> ${c.cancellationTerms || '---'}<br>
-                    <strong>סה״כ עלות:</strong> <span style="color:var(--success); font-weight:700;">${c.totalCost || '---'}</span>
-                `;
-
-                    waText = `*סיכום הזמנה:*
-תאריכים: ${c.datesSummary}
-יעד: ${c.destination}
-חברת תעופה: ${c.airline}
-שעת המראה הלוך: ${c.depFlightTime}
-שעת המראה חזור: ${c.retFlightTime}
-מזוודות מה כן כולל: ${c.luggageDetails}
-שמות הנוסעים לפי דרכון באנגלית:
-${c.passengersPassports}
-
-שם מלון: ${c.hotelName}
-עיר המלון: ${c.hotelCity}
-הרכב החדר: ${c.roomComposition}
-בסיס פנסיון: ${c.boardBasis}
-שם חדר: ${c.roomName}
-תנאי ביטול ההזמנה: ${c.cancellationTerms}
-*אין באחריותי על שינוי הלו"ז של הטיסה*
-סה"כ עלות ההזמנה: ${c.totalCost}`;
-
+            try {
+                const res = await fetch('/api/clients', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    form.reset();
+                    loadClients();
+                    alert('הנתונים נשמרו בהצלחה!');
                 } else {
-                    let typeText = c.bookingType === 'flight' ? 'טיסה בלבד' : (c.bookingType === 'hotel' ? 'מלון בלבד' : 'טיסה + מלון');
-                    detailsHTML = `
-                    <strong>סוג:</strong> ${typeText}<br>
-                    <strong>טלפון:</strong> ${c.phone || '---'}<br>
-                    ${c.pnr ? `<strong>PNR:</strong> ${c.pnr}<br>` : ''}
-                    ${c.airline ? `<strong>חברת תעופה:</strong> ${c.airline}<br>` : ''}
-                    ${c.flightNumber ? `<strong>טיסה:</strong> ${c.flightNumber}<br>` : ''}
-                    ${c.hotelName ? `<strong>מלון:</strong> ${c.hotelName} (${c.boardBasis})<br>` : ''}
-                    <strong>תאריכים:</strong> ${c.departureDate || '---'} עד ${c.returnDate || '---'}<br>
-                    ${c.notes ? `<strong>הערות:</strong> ${c.notes}` : ''}
-                `;
-
-                    waText = `שלום ${c.clientName}, ✈️\n\nהנה פרטי ההזמנה שלך:\nסוג: ${typeText}\n${c.pnr ? 'PNR: *' + c.pnr + '*\n' : ''}${c.airline ? 'חברת תעופה: ' + c.airline + '\n' : ''}${c.flightNumber ? 'טיסה: ' + c.flightNumber + '\n' : ''}${c.hotelName ? 'מלון: ' + c.hotelName + ' (' + c.boardBasis + ')\n' : ''}תאריכים: ${c.departureDate} עד ${c.returnDate}\n\nנסיעה טובה!`;
+                    alert('שגיאה בשמירה');
                 }
-
-                let cleanPhone = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
-                if (cleanPhone.startsWith('0')) {
-                    cleanPhone = '972' + cleanPhone.substring(1);
-                }
-                const encodedMsg = encodeURIComponent(waText);
-                const waLink = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodedMsg}` : `https://wa.me/?text=${encodedMsg}`;
-
-                item.innerHTML = `
-                <div class="client-header">
-                    <span class="client-name">${c.clientName}</span>
-                    <span class="badge">${c.formType === 'summary' ? 'סיכום הזמנה מלא' : 'הזמנה רגילה'}</span>
-                </div>
-                <div class="client-details">${detailsHTML}</div>
-                <div style="display: flex; gap: 8px;">
-                    <a href="${waLink}" target="_blank" class="btn btn-whatsapp" style="text-align:center; text-decoration:none;">💬 שלח בוואטסאפ</a>
-                    <button class="btn btn-danger" onclick="deleteClient('${c.id}')">מחק</button>
-                </div>
-            `;
-                container.appendChild(item);
-            });
+            } catch (e) {
+                // גיבוי מקומי במידה והשרת נם
+                data.id = Date.now().toString();
+                let local = JSON.parse(localStorage.getItem('fallback_clients') || '[]');
+                local.unshift(data);
+                localStorage.setItem('fallback_clients', JSON.stringify(local));
+                form.reset();
+                renderClients(local);
+                alert('הנתונים נשמרו מקומית בהצלחה!');
+            }
         }
 
         async function deleteClient(id) {
-            if (!confirm('האם למחוק הזמנה זו?')) return;
-            await fetch(`/api/clients/${id}`, { method: 'DELETE' });
-            loadClients();
+            if (!confirm('האם אתה בטוח שברצונך למחוק?')) return;
+            try {
+                await fetch(`/api/clients/${id}`, { method: 'DELETE' });
+                loadClients();
+            } catch (e) {
+                let local = JSON.parse(localStorage.getItem('fallback_clients') || '[]');
+                local = local.filter(c => c.id !== id);
+                localStorage.setItem('fallback_clients', JSON.stringify(local));
+                renderClients(local);
+            }
         }
+
+        function renderClients(clients) {
+            const container = document.getElementById('clientsContainer');
+            if (!clients.length) {
+                container.innerHTML = '<p style="color: #64748b;">אין הזמנות שמורות כרגע.</p>';
+                return;
+            }
+
+            container.innerHTML = clients.map(c => `
+            <div class="client-card">
+                <div class="client-info">
+                    <h3>${c.clientName || 'לקוח'} (${c.formType === 'summary' ? 'סיכום הזמנה' : 'הזמנה רגילה'})</h3>
+                    <p><strong>טלפון:</strong> ${c.phone || 'לא צויין'}</p>
+                    <p><strong>פרטים:</strong> ${c.destination || c.hotelName || c.pnr || c.notes || 'אין פרטים נוספים'}</p>
+                    <p><strong>עלות/הערות:</strong> ${c.totalCost || c.notes || '-'}</p>
+                </div>
+                <button class="delete-btn" onclick="deleteClient('${c.id}')">מחק</button>
+            </div>
+        `).join('');
+        }
+
+        // טעינת רשימה בעליית הדף
+        loadClients();
     </script>
 
 </body>
