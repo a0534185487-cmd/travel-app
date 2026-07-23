@@ -83,6 +83,29 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .checkbox-item input {
+            width: auto;
+            cursor: pointer;
+        }
+
         .preview-box {
             background: #0f172a;
             color: #f8fafc;
@@ -107,8 +130,8 @@
             cursor: pointer;
             width: 100%;
             font-size: 1rem;
-            transition: background 0.2s;
-            margin-top: 10px;
+            transition: opacity 0.2s;
+            margin-top: 15px;
         }
 
         .btn:hover {
@@ -187,6 +210,24 @@
                 <label>מחיר לאדם (₪):</label>
                 <input type="text" id="price" placeholder="לדוגמה: 1850" oninput="updatePreview()">
             </div>
+
+            <div class="form-group">
+                <label>✨ בנק פיצ'רים חכמים לדיל:</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" class="smart-feature"
+                            value="✈️ טיסות ישירות הלוך ושוב" checked onchange="updatePreview()"> טיסות ישירות</label>
+                    <label class="checkbox-item"><input type="checkbox" class="smart-feature"
+                            value="🧳 כולל מזוודה או תיק גב" checked onchange="updatePreview()"> כולל מזוודה</label>
+                    <label class="checkbox-item"><input type="checkbox" class="smart-feature"
+                            value="🏨 מלון מעולה במיקום מרכזי" checked onchange="updatePreview()"> מלון מרכזי</label>
+                    <label class="checkbox-item"><input type="checkbox" class="smart-feature"
+                            value="🍳 כולל ארוחת בוקר עשירה" onchange="updatePreview()"> ארוחת בוקר</label>
+                    <label class="checkbox-item"><input type="checkbox" class="smart-feature"
+                            value="🚐 כולל העברות משדה התעופה" onchange="updatePreview()"> כולל העברות</label>
+                    <label class="checkbox-item"><input type="checkbox" class="smart-feature"
+                            value="⚡ מקומות אחרונים במחיר הזה!" onchange="updatePreview()"> מקומות אחרונים</label>
+                </div>
+            </div>
         </div>
 
         <!-- תצוגה מקדימה -->
@@ -198,7 +239,6 @@
     </div>
 
     <script>
-        // זיהוי דגל אוטומטי לפי שם המדינה
         function getFlag(country) {
             if (!country) return '✈️';
             const c = country.trim();
@@ -237,6 +277,12 @@
             let hotelLine = hotel ? `🏨 מלון: ${hotel} ${starsStr}` : `🏨 מלון: לבחירה`;
             let dateLine = (start && end) ? `📅 תאריכים: ${start} עד ${end}` : `📅 תאריכים: בהתאמה אישית`;
             let priceLine = price ? `💰 מחיר לאדם: ₪${price}` : `💰 מחיר: פנו אלינו`;
+
+            // איסוף הפיצ'רים המסומנים מהבנק
+            const selectedFeatures = Array.from(document.querySelectorAll('.smart-feature:checked'))
+                .map(cb => `✅ ${cb.value}`)
+                .join('\n');
+
             let linkLine = groupLink ? `🔗 להצטרפות לקבוצת הדילים שלנו:\n${groupLink}` : `🔗 פנו אלינו בוואטסאפ לפרטים נוספים!`;
 
             const finalPost = `🔥 דיל חם שאסור לפפס! 🔥
@@ -245,6 +291,8 @@ ${locationLine}
 ${hotelLine}
 ${dateLine}
 ${priceLine}
+
+${selectedFeatures}
 
 ✨ אל תפספסו את החופשה הבאה שלכם!
 ${linkLine}`;
@@ -258,6 +306,9 @@ ${linkLine}`;
                 alert('הפוסט הועתק בהצלחה ללוח!');
             });
         }
+
+        // הפעלה ראשונית לעדכון התצוגה
+        updatePreview();
     </script>
 
 </body>
