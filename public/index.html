@@ -221,8 +221,7 @@
 
     <div class="container">
         <header>
-            <button id="installAppBtn" class="install-btn" style="display:inline-block;" onclick="installApp()">📥 הורד
-                אפליקציה למכשיר</button>
+            <button id="installAppBtn" class="install-btn" onclick="installApp()">📥 הורד אפליקציה למכשיר</button>
             <h1>מערכת ניהול הזמנות וסיכומים</h1>
             <p>מערכת מרכזית לסוכני נסיעות</p>
         </header>
@@ -493,13 +492,8 @@ PNR: ${c.pnr || '-'}
             const encoded = encodeURIComponent(text);
             const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
 
-            // קישור וואטסאפ מתוקן שעובד תמיד בצורה נקייה וישירה
-            let url = '';
-            if (phoneNum) {
-                url = `https://wa.me/${phoneNum}?text=${encoded}`;
-            } else {
-                url = `https://wa.me/?text=${encoded}`;
-            }
+            // פתיחת וואטסאפ בטוחה וישירה שעובדת בצורה מושלמת בלי חסימות
+            let url = phoneNum ? `https://wa.me/${phoneNum}?text=${encoded}` : `https://wa.me/?text=${encoded}`;
             window.open(url, '_blank');
         }
 
@@ -530,20 +524,16 @@ PNR: ${c.pnr || '-'}
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            document.getElementById('installAppBtn').style.display = 'inline-block';
         });
 
         function installApp() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        document.getElementById('installAppBtn').style.display = 'none';
-                    }
                     deferredPrompt = null;
                 });
             } else {
-                alert('להתקנה בנייד: פתח את תפריט הדפדפן (שלושת הנקודות) ובחר ב-"הוסף למסך הבית" (Add to Home Screen). במחשב ניתן להתקין דרך סמל ההתקנה בשורת כתובת האתר.');
+                alert('📱 התקנת האפליקציה למכשיר:\n\n• באייפון (Safari): לחץ על כפתור השיתוף (מרובע עם חץ למעלה) ואז בחר "הוסף למסך הבית".\n• באנדרואיד (Chrome): לחץ על שלוש הנקודות למעלה ובחר "הוסף למסך הבית" או "התקן אפליקציה".\n• במחשב: לחץ על סמל ההתקנה שמופיע בקצה שורת הכתובת למעלה.');
             }
         }
 
