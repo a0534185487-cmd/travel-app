@@ -7,18 +7,19 @@
     <title>TravelCRM Pro - ניהול סוכנות נסיעות</title>
     <style>
         :root {
-            --bg-color: #f4f7fe;
+            --bg-color: #f8f9fa;
             --sidebar-bg: #ffffff;
             --card-bg: #ffffff;
-            --border-color: #e2e8f0;
-            --text-main: #1b2559;
-            --text-muted: #707eae;
-            --primary: #4318ff;
-            --primary-hover: #3311db;
-            --accent: #05cd99;
-            --danger: #ee5d50;
-            --warning: #ffb547;
-            --input-bg: #f8f9fa;
+            --border-color: #eaeaea;
+            --text-main: #1a1a1a;
+            --text-muted: #717171;
+            --primary: #e63946;
+            /* אדום פרימיום */
+            --primary-hover: #d62828;
+            --accent: #2a9d8f;
+            --danger: #e76f51;
+            --warning: #f4a261;
+            --input-bg: #fdfdfd;
         }
 
         * {
@@ -33,29 +34,29 @@
             padding: 0;
         }
 
-        /* מסך התחברות יוקרתי */
+        /* מסך התחברות אדום-לבן */
         #loginScreen {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #4318ff 0%, #868cff 100%);
+            background: linear-gradient(135deg, #e63946 0%, #1d3557 100%);
             padding: 20px;
         }
 
         .login-card {
             background: white;
             padding: 40px;
-            border-radius: 24px;
+            border-radius: 20px;
             width: 100%;
-            max-width: 440px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 420px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             text-align: center;
         }
 
         .login-card h2 {
             margin-bottom: 8px;
-            color: var(--text-main);
+            color: var(--primary);
             font-size: 26px;
         }
 
@@ -65,12 +66,10 @@
             margin-bottom: 30px;
         }
 
-        /* מעטפת האפליקציה עם סיידבר */
+        /* מעטפת האפליקציה למחשב */
         #appContent {
             display: none;
             min-height: 100vh;
-            display: none;
-            /* ייפתח דרך הג'אווהסקריפט */
             grid-template-columns: 260px 1fr;
         }
 
@@ -82,12 +81,15 @@
             flex-direction: column;
             justify-content: space-between;
             position: fixed;
+            top: 0;
+            right: 0;
             height: 100vh;
             width: 260px;
+            z-index: 100;
         }
 
         .logo-area h2 {
-            font-size: 20px;
+            font-size: 22px;
             color: var(--primary);
             margin: 0 0 5px 0;
         }
@@ -106,7 +108,7 @@
 
         .nav-links li {
             padding: 12px 16px;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
             font-size: 14px;
@@ -120,14 +122,15 @@
 
         .nav-links li:hover,
         .nav-links li.active {
-            background: var(--bg-color);
+            background: #fff0f1;
             color: var(--primary);
         }
 
         main {
             margin-right: 260px;
             padding: 30px 40px;
-            max-width: 1300px;
+            max-width: 1200px;
+            width: calc(100% - 260px);
         }
 
         header {
@@ -139,6 +142,7 @@
             padding: 20px 30px;
             border-radius: 16px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--border-color);
         }
 
         header h1 {
@@ -148,7 +152,7 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -158,6 +162,7 @@
             padding: 24px;
             border-radius: 16px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -171,25 +176,26 @@
 
         .stat-card strong {
             font-size: 28px;
-            color: var(--text-main);
+            color: var(--primary);
         }
 
         .card {
             background: white;
             padding: 30px;
-            border-radius: 20px;
+            border-radius: 16px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--border-color);
             margin-bottom: 30px;
         }
 
-        /* טאבים בתוך עמוד הניהול */
         .tabs-header {
             display: flex;
             background: var(--bg-color);
             padding: 6px;
-            border-radius: 12px;
+            border-radius: 10px;
             margin-bottom: 25px;
             gap: 6px;
+            border: 1px solid var(--border-color);
         }
 
         .tab-btn {
@@ -223,7 +229,7 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
             margin-bottom: 20px;
         }
@@ -244,11 +250,11 @@
         input,
         select,
         textarea {
-            padding: 14px;
+            padding: 12px 14px;
             background: var(--input-bg);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 14px;
             transition: all 0.2s;
         }
@@ -259,7 +265,7 @@
             outline: none;
             border-color: var(--primary);
             background: white;
-            box-shadow: 0 0 0 3px rgba(67, 24, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
         }
 
         textarea {
@@ -271,13 +277,12 @@
             background: var(--primary);
             color: white;
             border: none;
-            padding: 14px 24px;
-            font-size: 15px;
+            padding: 12px 22px;
+            font-size: 14px;
             font-weight: 700;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             transition: background 0.2s;
-            box-shadow: 0 4px 12px rgba(67, 24, 255, 0.2);
         }
 
         .btn:hover {
@@ -285,30 +290,29 @@
         }
 
         .btn-danger {
-            background: #fee2e2;
-            color: var(--danger);
-            box-shadow: none;
+            background: #fff0f1;
+            color: var(--primary);
         }
 
         .btn-danger:hover {
-            background: var(--danger);
+            background: var(--primary);
             color: white;
         }
 
         .search-box {
             width: 100%;
-            padding: 14px;
+            padding: 12px 14px;
             margin-bottom: 25px;
             background: var(--input-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 10px;
         }
 
         .client-card {
-            background: #fafbfc;
+            background: #fafafa;
             border: 1px solid var(--border-color);
-            padding: 22px;
-            border-radius: 16px;
+            padding: 20px;
+            border-radius: 12px;
             margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
@@ -316,8 +320,8 @@
         }
 
         .flight-alert-badge {
-            background: #fff8eb;
-            color: var(--warning);
+            background: #fff3cd;
+            color: #856404;
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 11px;
@@ -325,18 +329,45 @@
             margin-right: 10px;
         }
 
+        /* התאמה מושלמת לטלפונים ניידים (Mobile View) */
         @media(max-width: 900px) {
             #appContent {
-                grid-template-columns: 1fr;
+                display: flex !important;
+                flex-direction: column;
             }
 
             aside {
-                display: none;
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-left: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 15px 20px;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .nav-links {
+                margin: 0;
+                display: flex;
+                gap: 10px;
+            }
+
+            .nav-links li {
+                margin: 0;
+                padding: 8px 12px;
             }
 
             main {
                 margin-right: 0;
+                width: 100%;
                 padding: 15px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
             }
         }
     </style>
@@ -344,7 +375,7 @@
 
 <body>
 
-    <!-- מסך התחברות חדש ומעוצב ברמה גבוהה -->
+    <!-- מסך התחברות -->
     <div id="loginScreen">
         <div class="login-card">
             <h2>TravelCRM Pro ✈️</h2>
@@ -363,22 +394,21 @@
         </div>
     </div>
 
-    <!-- מעטפת האפליקציה הראשית -->
+    <!-- מעטפת האפליקציה -->
     <div id="appContent" style="display: none;">
 
-        <!-- תפריט צד (Sidebar) מודרני -->
+        <!-- תפריט צד / סרגל עליון בנייד -->
         <aside>
             <div class="logo-area">
                 <h2>TravelCRM</h2>
                 <span id="sidebarAgentRole">סוכן מורשה</span>
             </div>
             <ul class="nav-links">
-                <li class="active" onclick="switchPage('dashboard', this)">📊 לוח בקרה והזמנות</li>
-                <li onclick="switchPage('settings', this)">⚙️ הגדרות ואבטחה</li>
+                <li class="active" onclick="switchPage('dashboard', this)">📊 לוח בקרה</li>
+                <li onclick="switchPage('settings', this)">⚙️ הגדרות</li>
             </ul>
             <div>
-                <button class="btn btn-danger" style="width: 100%; padding: 10px;" onclick="logoutUser()">התנתק
-                    מהמערכת</button>
+                <button class="btn btn-danger" style="padding: 10px 14px;" onclick="logoutUser()">התנתק</button>
             </div>
         </aside>
 
@@ -387,13 +417,13 @@
             <header>
                 <div>
                     <h1>שלום, <span id="currentAgentName" style="color: var(--primary);"></span> 🌟</h1>
-                    <span style="color: var(--text-muted); font-size: 13px;">ניהול לקוחות, טיסות ומלונות בקלות</span>
+                    <span style="color: var(--text-muted); font-size: 13px;">ניהול סוכנות נסיעות מתקדם</span>
                 </div>
                 <button class="btn" style="font-size: 13px; padding: 10px 16px;" onclick="installApp()">📥 התקן
                     אפליקציה</button>
             </header>
 
-            <!-- עמוד הניהול המרכזי -->
+            <!-- עמוד לוח בקרה -->
             <div id="page-dashboard" class="page-section active">
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -473,50 +503,28 @@
                     <form id="summaryForm" class="form-section" onsubmit="saveClient(event, 'summary')">
                         <input type="hidden" name="formType" value="summary">
                         <div class="grid">
-                            <div class="form-group">
-                                <label>שם הלקוח</label>
-                                <input type="text" name="clientName" required>
-                            </div>
-                            <div class="form-group">
-                                <label>טלפון</label>
-                                <input type="text" name="phone">
-                            </div>
-                            <div class="form-group">
-                                <label>תאריך התחלה (הלוך)</label>
-                                <input type="date" name="startDate" class="auto-date">
-                            </div>
-                            <div class="form-group">
-                                <label>תאריך סיום (חזרה)</label>
-                                <input type="date" name="endDate" class="auto-date">
-                            </div>
-                            <div class="form-group">
-                                <label>יעד</label>
-                                <input type="text" name="destination" placeholder="לדוגמה: פריז, צרפת">
-                            </div>
-                            <div class="form-group">
-                                <label>חברת תעופה</label>
-                                <input type="text" name="airline">
-                            </div>
-                            <div class="form-group">
-                                <label>שעת המראה הלוך</label>
-                                <input type="text" name="depFlightTime" placeholder="08:30">
-                            </div>
-                            <div class="form-group">
-                                <label>שעת המראה חזור</label>
-                                <input type="text" name="retFlightTime" placeholder="19:45">
-                            </div>
-                            <div class="form-group">
-                                <label>מזוודות כלולות</label>
-                                <input type="text" name="luggageDetails" placeholder="טרולי + מזוודה 23 קג">
-                            </div>
-                            <div class="form-group" style="grid-column: span 2;">
-                                <label>שמות נוסעים באנגלית לפי דרכון</label>
-                                <textarea name="passengersPassports" placeholder="ISRAEL ISRAELI"></textarea>
-                            </div>
+                            <div class="form-group"><label>שם הלקוח</label><input type="text" name="clientName"
+                                    required></div>
+                            <div class="form-group"><label>טלפון</label><input type="text" name="phone"></div>
+                            <div class="form-group"><label>תאריך התחלה (הלוך)</label><input type="date" name="startDate"
+                                    class="auto-date"></div>
+                            <div class="form-group"><label>תאריך סיום (חזרה)</label><input type="date" name="endDate"
+                                    class="auto-date"></div>
+                            <div class="form-group"><label>יעד</label><input type="text" name="destination"
+                                    placeholder="לדוגמה: פריז"></div>
+                            <div class="form-group"><label>חברת תעופה</label><input type="text" name="airline"></div>
+                            <div class="form-group"><label>שעת המראה הלוך</label><input type="text" name="depFlightTime"
+                                    placeholder="08:30"></div>
+                            <div class="form-group"><label>שעת המראה חזור</label><input type="text" name="retFlightTime"
+                                    placeholder="19:45"></div>
+                            <div class="form-group"><label>מזוודות כלולות</label><input type="text"
+                                    name="luggageDetails" placeholder="טרולי + מזוודה"></div>
+                            <div class="form-group" style="grid-column: span 2;"><label>שמות נוסעים באנגלית לפי
+                                    דרכון</label><textarea name="passengersPassports"></textarea></div>
                             <div class="form-group"><label>שם מלון</label><input type="text" name="hotelName"></div>
                             <div class="form-group"><label>עיר המלון</label><input type="text" name="hotelCity"></div>
                             <div class="form-group"><label>הרכב חדר</label><input type="text" name="roomComposition"
-                                    placeholder="2 מבוגרים + ילד"></div>
+                                    placeholder="2 מבוגרים"></div>
                             <div class="form-group"><label>בסיס פנסיון</label><input type="text" name="boardBasis"
                                     placeholder="הכל כלול"></div>
                             <div class="form-group"><label>שם חדר</label><input type="text" name="roomName"></div>
@@ -538,7 +546,7 @@
                 </div>
             </div>
 
-            <!-- עמוד הגדרות ואבטחה (כאן משנים סיסמה!) -->
+            <!-- עמוד הגדרות ואבטחה -->
             <div id="page-settings" class="page-section">
                 <div class="card" style="max-width: 600px;">
                     <h2>הגדרות חשבון ואבטחה 🔒</h2>
@@ -642,7 +650,7 @@
                 return;
             }
             localStorage.setItem(`pass_${currentAgent}`, newPass);
-            alert('הסיסמה עודכנה בהצלחה! מעתה יש להתחבר איתה.');
+            alert('הסיסמה עודכנה בהצלחה!');
             document.getElementById('currentPassInput').value = '';
             document.getElementById('newPassInput').value = '';
         }
@@ -761,7 +769,7 @@
                         <p style="margin: 3px 0; color: var(--text-muted); font-size: 13px;">יעד/מלון: ${c.destination || c.hotelName || '-'}</p>
                     </div>
                     <div style="display: flex; gap: 8px;">
-                        <button class="btn" style="padding: 8px 12px; font-size: 12px; background: #05cd99;" onclick="sendWhatsApp(${idx})">💬 WhatsApp</button>
+                        <button class="btn" style="padding: 8px 12px; font-size: 12px; background: #2a9d8f;" onclick="sendWhatsApp(${idx})">💬 WhatsApp</button>
                         <button class="btn btn-danger" style="padding: 8px 12px; font-size: 12px;" onclick="deleteClient('${c.id}')">מחק</button>
                     </div>
                 </div>`;
