@@ -10,16 +10,13 @@
             --bg-color: #f8f9fa;
             --sidebar-bg: #ffffff;
             --card-bg: #ffffff;
-            --border-color: #eaeaea;
-            --text-main: #1a1a1a;
-            --text-muted: #717171;
-            --primary: #e63946;
-            /* אדום פרימיום */
-            --primary-hover: #d62828;
-            --accent: #2a9d8f;
-            --danger: #e76f51;
-            --warning: #f4a261;
-            --input-bg: #fdfdfd;
+            --border-color: #e5e7eb;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --primary: #dc2626;
+            /* אדום פרימיום עמוק */
+            --primary-hover: #b91c1c;
+            --input-bg: #ffffff;
         }
 
         * {
@@ -40,7 +37,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #e63946 0%, #1d3557 100%);
+            background: linear-gradient(135deg, #dc2626 0%, #111827 100%);
             padding: 20px;
         }
 
@@ -50,7 +47,7 @@
             border-radius: 20px;
             width: 100%;
             max-width: 420px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
 
@@ -66,11 +63,17 @@
             margin-bottom: 30px;
         }
 
-        /* מעטפת האפליקציה למחשב */
+        /* מעטפת האפליקציה למחשב - פריסה מדויקת מימין לשמאל */
         #appContent {
             display: none;
             min-height: 100vh;
-            grid-template-columns: 260px 1fr;
+            display: none;
+            /* ייפתח דרך הג'אווהסקריפט */
+        }
+
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
         }
 
         aside {
@@ -80,12 +83,11 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: fixed;
-            top: 0;
-            right: 0;
-            height: 100vh;
             width: 260px;
-            z-index: 100;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
         }
 
         .logo-area h2 {
@@ -122,15 +124,15 @@
 
         .nav-links li:hover,
         .nav-links li.active {
-            background: #fff0f1;
+            background: #fef2f2;
             color: var(--primary);
         }
 
         main {
-            margin-right: 260px;
-            padding: 30px 40px;
-            max-width: 1200px;
-            width: calc(100% - 260px);
+            flex-grow: 1;
+            padding: 40px;
+            max-width: calc(100vw - 260px);
+            overflow-x: hidden;
         }
 
         header {
@@ -188,33 +190,36 @@
             margin-bottom: 30px;
         }
 
+        /* טאבים פרוסים לרוחב מלא */
         .tabs-header {
             display: flex;
             background: var(--bg-color);
             padding: 6px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 25px;
             gap: 6px;
             border: 1px solid var(--border-color);
+            width: 100%;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             border: none;
             background: transparent;
             color: var(--text-muted);
             font-weight: 700;
-            font-size: 14px;
+            font-size: 15px;
             border-radius: 8px;
             cursor: pointer;
+            text-align: center;
             transition: all 0.2s;
         }
 
         .tab-btn.active {
             background: white;
             color: var(--primary);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .form-section,
@@ -250,6 +255,7 @@
         input,
         select,
         textarea {
+            width: 100%;
             padding: 12px 14px;
             background: var(--input-bg);
             border: 1px solid var(--border-color);
@@ -264,8 +270,7 @@
         textarea:focus {
             outline: none;
             border-color: var(--primary);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
         }
 
         textarea {
@@ -290,7 +295,7 @@
         }
 
         .btn-danger {
-            background: #fff0f1;
+            background: #fef2f2;
             color: var(--primary);
         }
 
@@ -320,8 +325,8 @@
         }
 
         .flight-alert-badge {
-            background: #fff3cd;
-            color: #856404;
+            background: #fef3c7;
+            color: #d97706;
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 11px;
@@ -329,22 +334,21 @@
             margin-right: 10px;
         }
 
-        /* התאמה מושלמת לטלפונים ניידים (Mobile View) */
+        /* התאמה מושלמת לטלפונים ניידים */
         @media(max-width: 900px) {
-            #appContent {
-                display: flex !important;
+            .app-layout {
                 flex-direction: column;
             }
 
             aside {
-                position: relative;
                 width: 100%;
                 height: auto;
+                position: relative;
+                flex-direction: row;
+                align-items: center;
                 border-left: none;
                 border-bottom: 1px solid var(--border-color);
                 padding: 15px 20px;
-                flex-direction: row;
-                align-items: center;
             }
 
             .nav-links {
@@ -359,8 +363,7 @@
             }
 
             main {
-                margin-right: 0;
-                width: 100%;
+                max-width: 100%;
                 padding: 15px;
             }
 
@@ -394,179 +397,184 @@
         </div>
     </div>
 
-    <!-- מעטפת האפליקציה -->
+    <!-- מעטפת האפליקציה הראשית -->
     <div id="appContent" style="display: none;">
+        <div class="app-layout">
 
-        <!-- תפריט צד / סרגל עליון בנייד -->
-        <aside>
-            <div class="logo-area">
-                <h2>TravelCRM</h2>
-                <span id="sidebarAgentRole">סוכן מורשה</span>
-            </div>
-            <ul class="nav-links">
-                <li class="active" onclick="switchPage('dashboard', this)">📊 לוח בקרה</li>
-                <li onclick="switchPage('settings', this)">⚙️ הגדרות</li>
-            </ul>
-            <div>
-                <button class="btn btn-danger" style="padding: 10px 14px;" onclick="logoutUser()">התנתק</button>
-            </div>
-        </aside>
-
-        <!-- תוכן מרכזי -->
-        <main>
-            <header>
+            <!-- סיידבר צדדי -->
+            <aside>
+                <div class="logo-area">
+                    <h2>TravelCRM</h2>
+                    <span id="sidebarAgentRole">סוכן מורשה</span>
+                </div>
+                <ul class="nav-links">
+                    <li class="active" onclick="switchPage('dashboard', this)">📊 לוח בקרה</li>
+                    <li onclick="switchPage('settings', this)">⚙️ הגדרות</li>
+                </ul>
                 <div>
-                    <h1>שלום, <span id="currentAgentName" style="color: var(--primary);"></span> 🌟</h1>
-                    <span style="color: var(--text-muted); font-size: 13px;">ניהול סוכנות נסיעות מתקדם</span>
+                    <button class="btn btn-danger" style="padding: 10px 14px; width: 100%;"
+                        onclick="logoutUser()">התנתק</button>
                 </div>
-                <button class="btn" style="font-size: 13px; padding: 10px 16px;" onclick="installApp()">📥 התקן
-                    אפליקציה</button>
-            </header>
+            </aside>
 
-            <!-- עמוד לוח בקרה -->
-            <div id="page-dashboard" class="page-section active">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <span>סך הכל הזמנות</span>
-                        <strong id="statTotal">0</strong>
+            <!-- תוכן מרכזי -->
+            <main>
+                <header>
+                    <div>
+                        <h1>שלום, <span id="currentAgentName" style="color: var(--primary);"></span> 🌟</h1>
+                        <span style="color: var(--text-muted); font-size: 13px;">ניהול סוכנות נסיעות מתקדם</span>
                     </div>
-                    <div class="stat-card">
-                        <span>טיסות</span>
-                        <strong id="statFlights">0</strong>
+                    <button class="btn" style="font-size: 13px; padding: 10px 16px;" onclick="installApp()">📥 התקן
+                        אפליקציה</button>
+                </header>
+
+                <!-- עמוד לוח בקרה -->
+                <div id="page-dashboard" class="page-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span>סך הכל הזמנות</span>
+                            <strong id="statTotal">0</strong>
+                        </div>
+                        <div class="stat-card">
+                            <span>טיסות</span>
+                            <strong id="statFlights">0</strong>
+                        </div>
+                        <div class="stat-card">
+                            <span>מלונות</span>
+                            <strong id="statHotels">0</strong>
+                        </div>
+                        <div class="stat-card">
+                            <span>חבילות</span>
+                            <strong id="statPackages">0</strong>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <span>מלונות</span>
-                        <strong id="statHotels">0</strong>
+
+                    <div class="card">
+                        <div class="tabs-header">
+                            <button class="tab-btn active" onclick="switchTab('standard')">ניהול הזמנה רגיל</button>
+                            <button class="tab-btn" onclick="switchTab('summary')">סיכום הזמנה מפורט</button>
+                        </div>
+
+                        <!-- טופס רגיל -->
+                        <form id="standardForm" class="form-section active" onsubmit="saveClient(event, 'standard')">
+                            <input type="hidden" name="formType" value="standard">
+                            <div class="grid">
+                                <div class="form-group">
+                                    <label>שם הלקוח</label>
+                                    <input type="text" name="clientName" required placeholder="שם מלא...">
+                                </div>
+                                <div class="form-group">
+                                    <label>טלפון</label>
+                                    <input type="text" name="phone" placeholder="050-0000000">
+                                </div>
+                                <div class="form-group">
+                                    <label>סוג הזמנה</label>
+                                    <select name="bookingType">
+                                        <option value="flight_hotel">טיסה + מלון</option>
+                                        <option value="flight">טיסה בלבד</option>
+                                        <option value="hotel">מלון בלבד</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>מספר PNR</label>
+                                    <input type="text" name="pnr" placeholder="קוד הזמנה...">
+                                </div>
+                                <div class="form-group">
+                                    <label>מספר טיסה</label>
+                                    <input type="text" name="flightNumber">
+                                </div>
+                                <div class="form-group">
+                                    <label>תאריך יציאה</label>
+                                    <input type="date" name="departureDate" class="auto-date">
+                                </div>
+                                <div class="form-group">
+                                    <label>תאריך חזרה</label>
+                                    <input type="date" name="returnDate" class="auto-date">
+                                </div>
+                                <div class="form-group">
+                                    <label>שם המלון</label>
+                                    <input type="text" name="hotelName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>הערות</label>
+                                <textarea name="notes"></textarea>
+                            </div>
+                            <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">שמור הזמנה
+                                רגילה</button>
+                        </form>
+
+                        <!-- טופס מפורט -->
+                        <form id="summaryForm" class="form-section" onsubmit="saveClient(event, 'summary')">
+                            <input type="hidden" name="formType" value="summary">
+                            <div class="grid">
+                                <div class="form-group"><label>שם הלקוח</label><input type="text" name="clientName"
+                                        required></div>
+                                <div class="form-group"><label>טלפון</label><input type="text" name="phone"></div>
+                                <div class="form-group"><label>תאריך התחלה (הלוך)</label><input type="date"
+                                        name="startDate" class="auto-date"></div>
+                                <div class="form-group"><label>תאריך סיום (חזרה)</label><input type="date"
+                                        name="endDate" class="auto-date"></div>
+                                <div class="form-group"><label>יעד</label><input type="text" name="destination"
+                                        placeholder="לדוגמה: פריז"></div>
+                                <div class="form-group"><label>חברת תעופה</label><input type="text" name="airline">
+                                </div>
+                                <div class="form-group"><label>שעת המראה הלוך</label><input type="text"
+                                        name="depFlightTime" placeholder="08:30"></div>
+                                <div class="form-group"><label>שעת המראה חזור</label><input type="text"
+                                        name="retFlightTime" placeholder="19:45"></div>
+                                <div class="form-group"><label>מזוודות כלולות</label><input type="text"
+                                        name="luggageDetails" placeholder="טרולי + מזוודה"></div>
+                                <div class="form-group" style="grid-column: span 2;"><label>שמות נוסעים באנגלית לפי
+                                        דרכון</label><textarea name="passengersPassports"></textarea></div>
+                                <div class="form-group"><label>שם מלון</label><input type="text" name="hotelName"></div>
+                                <div class="form-group"><label>עיר המלון</label><input type="text" name="hotelCity">
+                                </div>
+                                <div class="form-group"><label>הרכב חדר</label><input type="text" name="roomComposition"
+                                        placeholder="2 מבוגרים"></div>
+                                <div class="form-group"><label>בסיס פנסיון</label><input type="text" name="boardBasis"
+                                        placeholder="הכל כלול"></div>
+                                <div class="form-group"><label>שם חדר</label><input type="text" name="roomName"></div>
+                                <div class="form-group"><label>תנאי ביטול</label><input type="text"
+                                        name="cancellationTerms"></div>
+                                <div class="form-group"><label>סה"כ עלות</label><input type="text" name="totalCost"
+                                        placeholder="$1,500"></div>
+                            </div>
+                            <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">שמור סיכום הזמנה
+                                מפורט</button>
+                        </form>
                     </div>
-                    <div class="stat-card">
-                        <span>חבילות</span>
-                        <strong id="statPackages">0</strong>
+
+                    <div class="card">
+                        <h2>ההזמנות שלי</h2>
+                        <input type="text" id="searchInput" class="search-box"
+                            placeholder="🔍 חיפוש מהיר לפי לקוח, טלפון או יעד..." oninput="filterClients()">
+                        <div id="clientsContainer">טוען נתונים...</div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="tabs-header">
-                        <button class="tab-btn active" onclick="switchTab('standard')">ניהול הזמנה רגיל</button>
-                        <button class="tab-btn" onclick="switchTab('summary')">סיכום הזמנה מפורט</button>
+                <!-- עמוד הגדרות ואבטחה -->
+                <div id="page-settings" class="page-section">
+                    <div class="card" style="max-width: 600px;">
+                        <h2>הגדרות חשבון ואבטחה 🔒</h2>
+                        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px;">כאן תוכל לשנות את
+                            הסיסמה האישית שלך לחשבון הסוכן.</p>
+                        <form onsubmit="changePassword(event)">
+                            <div class="form-group">
+                                <label>סיסמה נוכחית</label>
+                                <input type="password" id="currentPassInput" required placeholder="הקלד סיסמה נוכחית">
+                            </div>
+                            <div class="form-group">
+                                <label>סיסמה חדשה</label>
+                                <input type="password" id="newPassInput" required placeholder="הקלד סיסמה חדשה">
+                            </div>
+                            <button type="submit" class="btn" style="margin-top: 10px;">עדכן סיסמה חדשה</button>
+                        </form>
                     </div>
-
-                    <!-- טופס רגיל -->
-                    <form id="standardForm" class="form-section active" onsubmit="saveClient(event, 'standard')">
-                        <input type="hidden" name="formType" value="standard">
-                        <div class="grid">
-                            <div class="form-group">
-                                <label>שם הלקוח</label>
-                                <input type="text" name="clientName" required placeholder="שם מלא...">
-                            </div>
-                            <div class="form-group">
-                                <label>טלפון</label>
-                                <input type="text" name="phone" placeholder="050-0000000">
-                            </div>
-                            <div class="form-group">
-                                <label>סוג הזמנה</label>
-                                <select name="bookingType">
-                                    <option value="flight_hotel">טיסה + מלון</option>
-                                    <option value="flight">טיסה בלבד</option>
-                                    <option value="hotel">מלון בלבד</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>מספר PNR</label>
-                                <input type="text" name="pnr" placeholder="קוד הזמנה...">
-                            </div>
-                            <div class="form-group">
-                                <label>מספר טיסה</label>
-                                <input type="text" name="flightNumber">
-                            </div>
-                            <div class="form-group">
-                                <label>תאריך יציאה</label>
-                                <input type="date" name="departureDate" class="auto-date">
-                            </div>
-                            <div class="form-group">
-                                <label>תאריך חזרה</label>
-                                <input type="date" name="returnDate" class="auto-date">
-                            </div>
-                            <div class="form-group">
-                                <label>שם המלון</label>
-                                <input type="text" name="hotelName">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>הערות</label>
-                            <textarea name="notes"></textarea>
-                        </div>
-                        <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">שמור הזמנה
-                            רגילה</button>
-                    </form>
-
-                    <!-- טופס מפורט -->
-                    <form id="summaryForm" class="form-section" onsubmit="saveClient(event, 'summary')">
-                        <input type="hidden" name="formType" value="summary">
-                        <div class="grid">
-                            <div class="form-group"><label>שם הלקוח</label><input type="text" name="clientName"
-                                    required></div>
-                            <div class="form-group"><label>טלפון</label><input type="text" name="phone"></div>
-                            <div class="form-group"><label>תאריך התחלה (הלוך)</label><input type="date" name="startDate"
-                                    class="auto-date"></div>
-                            <div class="form-group"><label>תאריך סיום (חזרה)</label><input type="date" name="endDate"
-                                    class="auto-date"></div>
-                            <div class="form-group"><label>יעד</label><input type="text" name="destination"
-                                    placeholder="לדוגמה: פריז"></div>
-                            <div class="form-group"><label>חברת תעופה</label><input type="text" name="airline"></div>
-                            <div class="form-group"><label>שעת המראה הלוך</label><input type="text" name="depFlightTime"
-                                    placeholder="08:30"></div>
-                            <div class="form-group"><label>שעת המראה חזור</label><input type="text" name="retFlightTime"
-                                    placeholder="19:45"></div>
-                            <div class="form-group"><label>מזוודות כלולות</label><input type="text"
-                                    name="luggageDetails" placeholder="טרולי + מזוודה"></div>
-                            <div class="form-group" style="grid-column: span 2;"><label>שמות נוסעים באנגלית לפי
-                                    דרכון</label><textarea name="passengersPassports"></textarea></div>
-                            <div class="form-group"><label>שם מלון</label><input type="text" name="hotelName"></div>
-                            <div class="form-group"><label>עיר המלון</label><input type="text" name="hotelCity"></div>
-                            <div class="form-group"><label>הרכב חדר</label><input type="text" name="roomComposition"
-                                    placeholder="2 מבוגרים"></div>
-                            <div class="form-group"><label>בסיס פנסיון</label><input type="text" name="boardBasis"
-                                    placeholder="הכל כלול"></div>
-                            <div class="form-group"><label>שם חדר</label><input type="text" name="roomName"></div>
-                            <div class="form-group"><label>תנאי ביטול</label><input type="text"
-                                    name="cancellationTerms"></div>
-                            <div class="form-group"><label>סה"כ עלות</label><input type="text" name="totalCost"
-                                    placeholder="$1,500"></div>
-                        </div>
-                        <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">שמור סיכום הזמנה
-                            מפורט</button>
-                    </form>
                 </div>
 
-                <div class="card">
-                    <h2>ההזמנות שלי</h2>
-                    <input type="text" id="searchInput" class="search-box"
-                        placeholder="🔍 חיפוש מהיר לפי לקוח, טלפון או יעד..." oninput="filterClients()">
-                    <div id="clientsContainer">טוען נתונים...</div>
-                </div>
-            </div>
-
-            <!-- עמוד הגדרות ואבטחה -->
-            <div id="page-settings" class="page-section">
-                <div class="card" style="max-width: 600px;">
-                    <h2>הגדרות חשבון ואבטחה 🔒</h2>
-                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px;">כאן תוכל לשנות את הסיסמה
-                        האישית שלך לחשבון הסוכן.</p>
-                    <form onsubmit="changePassword(event)">
-                        <div class="form-group">
-                            <label>סיסמה נוכחית</label>
-                            <input type="password" id="currentPassInput" required placeholder="הקלד סיסמה נוכחית">
-                        </div>
-                        <div class="form-group">
-                            <label>סיסמה חדשה</label>
-                            <input type="password" id="newPassInput" required placeholder="הקלד סיסמה חדשה">
-                        </div>
-                        <button type="submit" class="btn" style="margin-top: 10px;">עדכן סיסמה חדשה</button>
-                    </form>
-                </div>
-            </div>
-
-        </main>
+            </main>
+        </div>
     </div>
 
     <script>
@@ -614,7 +622,7 @@
 
         function showApp() {
             document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('appContent').style.display = 'grid';
+            document.getElementById('appContent').style.display = 'block';
             document.getElementById('currentAgentName').innerText = currentAgent;
             document.getElementById('sidebarAgentRole').innerText = `סוכן: ${currentAgent}`;
             loadClients();
@@ -769,7 +777,7 @@
                         <p style="margin: 3px 0; color: var(--text-muted); font-size: 13px;">יעד/מלון: ${c.destination || c.hotelName || '-'}</p>
                     </div>
                     <div style="display: flex; gap: 8px;">
-                        <button class="btn" style="padding: 8px 12px; font-size: 12px; background: #2a9d8f;" onclick="sendWhatsApp(${idx})">💬 WhatsApp</button>
+                        <button class="btn" style="padding: 8px 12px; font-size: 12px; background: #059669;" onclick="sendWhatsApp(${idx})">💬 WhatsApp</button>
                         <button class="btn btn-danger" style="padding: 8px 12px; font-size: 12px;" onclick="deleteClient('${c.id}')">מחק</button>
                     </div>
                 </div>`;
