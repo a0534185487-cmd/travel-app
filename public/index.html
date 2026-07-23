@@ -736,13 +736,41 @@
 
         function sendWhatsApp(index) {
             const c = allClients[index];
-            let text = c.formType === 'summary' ?
-                `שלום ${c.clientName || 'לקוח'} 👋\nפרטי ההזמנה:\nיעד: ${c.destination}\nמלון: ${c.hotelName}\nעלות: ${c.totalCost}` :
-                `שלום ${c.clientName || 'לקוח'} 👋\nהזמנתך נקלטה בהצלחה! PNR: ${c.pnr}`;
+            let text = "";
+
+            if (c.formType === 'summary') {
+                text = `שלום ${c.clientName || 'לקוח'} 👋\n` +
+                    `מצורפים פרטי ההזמנה שלך:\n\n` +
+                    `✈️ יעד: ${c.destination || '-'}\n` +
+                    `📅 תאריכים: ${c.startDate || '-'} עד ${c.endDate || '-'}\n` +
+                    `🏢 מלון: ${c.hotelName || '-'} (${c.hotelCity || '-'})\n` +
+                    `🛫 חברת תעופה: ${c.airline || '-'}\n` +
+                    `⏰ שעות טיסה: הלוך ${c.depFlightTime || '-'} | חזור ${c.retFlightTime || '-'}\n` +
+                    `🧳 מזוודות: ${c.luggageDetails || '-'}\n` +
+                    `👥 נוסעים: ${c.passengersPassports || '-'}\n` +
+                    `🛏️ חדר: ${c.roomComposition || '-'} | ${c.boardBasis || '-'}\n` +
+                    `📜 תנאי ביטול: ${c.cancellationTerms || '-'}\n` +
+                    `💰 סה"כ עלות: ${c.totalCost || '-'}\n\n` +
+                    `חופשה מהנה ונעימה! 🌴`;
+            } else {
+                text = `שלום ${c.clientName || 'לקוח'} 👋\n` +
+                    `הזמנתך נקלטה בהצלחה!\n` +
+                    `✈️ סוג: ${c.bookingType || '-'}\n` +
+                    `📌 PNR: ${c.pnr || '-'}\n` +
+                    `🛫 מספר טיסה: ${c.flightNumber || '-'}\n` +
+                    `📅 תאריכים: ${c.departureDate || '-'} עד ${c.returnDate || '-'}\n` +
+                    `🏨 מלון: ${c.hotelName || '-'}\n` +
+                    `📝 הערות: ${c.notes || '-'}`;
+            }
 
             let phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
             if (phoneNum.startsWith('0')) phoneNum = '972' + phoneNum.substring(1);
-            window.open(phoneNum ? `https://api.whatsapp.com/send?phone=${phoneNum}&text=${encodeURIComponent(text)}` : `https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+
+            const url = phoneNum ?
+                `https://api.whatsapp.com/send?phone=${phoneNum}&text=${encodeURIComponent(text)}` :
+                `https://wa.me/?text=${encodeURIComponent(text)}`;
+
+            window.open(url, '_blank');
         }
 
         function renderClients(clients) {
