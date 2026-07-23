@@ -4,137 +4,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מחולל הדילים החכם</title>
+    <title>מחולל דילים חכם - CRM</title>
     <style>
+        :root {
+            --primary: #2563eb;
+            --success: #10b981;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f3f4f6;
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             margin: 0;
             padding: 20px;
         }
 
-        .deal-gen-container {
-            padding: 20px;
-            background: #fff;
-            border-radius: 12px;
+        .container {
             max-width: 1200px;
             margin: 0 auto;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .deal-gen-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 20px;
         }
 
-        @media (max-width: 768px) {
-            .deal-gen-grid {
+        @media(max-width: 900px) {
+            .container {
                 grid-template-columns: 1fr;
             }
         }
 
-        .deal-form-section,
-        .deal-preview-section {
-            background: #f9fafb;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
+        .card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+        h2 {
+            margin-top: 0;
+            color: var(--primary);
+            font-size: 1.25rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
         }
 
         .form-group {
             margin-bottom: 15px;
         }
 
-        .form-group label {
+        label {
             display: block;
-            font-weight: bold;
             margin-bottom: 5px;
-            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
 
-        .form-group input,
-        .form-group select {
+        input,
+        select,
+        textarea {
             width: 100%;
             padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
             box-sizing: border-box;
         }
 
-        .input-with-copy {
-            display: flex;
-            gap: 5px;
-        }
-
-        .input-with-copy button {
-            padding: 0 12px;
-            background: #e5e7eb;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .prices-box,
-        .features-box {
-            background: #fff;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 15px;
-            border: 1px solid #e5e7eb;
-        }
-
-        .checkbox-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            font-size: 14px;
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         .preview-box {
-            background: #fdfdfd;
-            border: 1px solid #e5e7eb;
-            padding: 15px;
-            border-radius: 6px;
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
             white-space: pre-wrap;
             font-family: monospace;
-            font-size: 13px;
-            height: 380px;
+            font-size: 0.9rem;
+            min-height: 250px;
+            max-height: 400px;
             overflow-y: auto;
             direction: rtl;
-            text-align: right;
-            margin-bottom: 15px;
-            color: #111;
         }
 
-        .copy-btn-main {
-            width: 100%;
-            background: #10b981;
+        .btn {
+            background: var(--success);
             color: white;
             border: none;
-            padding: 12px;
-            font-size: 16px;
+            padding: 12px 20px;
+            border-radius: 8px;
             font-weight: bold;
-            border-radius: 6px;
             cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
             transition: background 0.2s;
+            margin-top: 10px;
         }
 
-        .copy-btn-main:hover {
-            background: #059669;
+        .btn:hover {
+            opacity: 0.9;
         }
 
         .back-link {
             display: inline-block;
-            margin-bottom: 15px;
-            color: #4f46e5;
+            margin-bottom: 20px;
+            color: var(--primary);
             text-decoration: none;
             font-weight: bold;
         }
@@ -147,267 +131,131 @@
 
 <body>
 
-    <div class="deal-gen-container">
-        <a href="index.html" class="back-link">⬅ חזרה ללוח הבקרה הראשי</a>
-        <h2>🚀 מחולל הדילים החכם לסוכנים</h2>
-        <p class="subtitle" style="color: #666; margin-bottom: 20px;">בחר, סמן, והעתק פוסט מושלם לוואטסאפ ולקבוצות
-            בשניות!</p>
+    <div class="container" style="max-width: 100%;">
+        <div style="grid-column: 1 / -1;">
+            <a href="index.html" class="back-link">← חזרה ללוח בקרה הראשי (CRM)</a>
+        </div>
 
-        <div class="deal-gen-grid">
-            <!-- עמודת הגדרות ונתונים -->
-            <div class="deal-form-section">
+        <!-- טופס הזנת נתונים -->
+        <div class="card">
+            <h2>✈️ פרטי הדיל והגדרות סוכן</h2>
 
-                <!-- 1. יעד ודגל -->
-                <div class="form-group">
-                    <label>🌍 בחר יעד (מדינה/עיר):</label>
-                    <select id="gen-destination" onchange="generateDealPost()">
-                        <option value="">בחר יעד...</option>
-                        <option value="יוון" data-flag="🇬🇷">יוון 🇬🇷</option>
-                        <option value="אזרבייגן" data-flag="🇦🇿">אזרבייגן 🇦🇿</option>
-                        <option value="הונגריה" data-flag="🇭🇺">הונגריה 🇭🇺</option>
-                        <option value="קפריסין" data-flag="🇨🇾">קפריסין 🇨🇾</option>
-                        <option value="גיאורגיה" data-flag="🇬🇪">גיאורגיה 🇬🇪</option>
-                        <option value="איטליה" data-flag="🇮🇹">איטליה 🇮🇹</option>
-                        <option value="ספרד" data-flag="🇪🇸">ספרד 🇪🇸</option>
-                        <option value="דובאי" data-flag="🇦🇪">דובאי 🇦🇪</option>
-                        <option value="תאילנד" data-flag="🇹🇭">תאילנד 🇹🇭</option>
-                        <option value="ארה״ב" data-flag="🇺🇸">ארה״ב 🇺🇸</option>
-                    </select>
-                </div>
-
-                <!-- 2. לוח שנה אוטומטי לתאריכים -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>⏱️ תאריך הלוך:</label>
-                        <input type="date" id="gen-date-from" onchange="generateDealPost()">
-                    </div>
-                    <div class="form-group">
-                        <label>⏱️ תאריך חזרה:</label>
-                        <input type="date" id="gen-date-to" onchange="generateDealPost()">
-                    </div>
-                </div>
-
-                <!-- 3. פרטי מלון ותמונות -->
-                <div class="form-group">
-                    <label>🏬 שם המלון וכוכבים:</label>
-                    <div class="input-with-copy">
-                        <input type="text" id="gen-hotel-name" placeholder="לדוגמה: Mercure Baku City 4 🌟"
-                            oninput="generateDealPost()">
-                        <button type="button" onclick="copyHotelName()" title="העתק שם מלון">📋</button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>📸 קישור לתמונות / מלון (Did.li):</label>
-                    <input type="text" id="gen-hotel-link" placeholder="https://did.li/..."
-                        oninput="generateDealPost()">
-                </div>
-
-                <!-- 4. בסיס פנסיון -->
-                <div class="form-group">
-                    <label>🍽️ בסיס פנסיון:</label>
-                    <select id="gen-board" onchange="generateDealPost()">
-                        <option value="">בחר בסיס אירוח...</option>
-                        <option value="כולל ארוחת בוקר ☕">כולל ארוחת בוקר ☕</option>
-                        <option value="חצי פנסיון 🍳">חצי פנסיון 🍳</option>
-                        <option value="הכל כלול (All Inclusive) 🍷">הכל כלול (All Inclusive) 🍷</option>
-                        <option value="ללא ארוחות 🧳">ללא ארוחות 🧳</option>
-                    </select>
-                </div>
-
-                <!-- 5. מדרג מחירים -->
-                <div class="prices-box">
-                    <h4>💰 מדרג מחירים (הזן את הרלוונטי):</h4>
-                    <div class="form-group">
-                        <label>👤 מחיר לאדם בהרכב זוגי:</label>
-                        <input type="text" id="gen-price-single" placeholder="לדוגמה: 2,250₪"
-                            oninput="generateDealPost()">
-                    </div>
-                    <div class="form-group">
-                        <label>👫 מחיר סה״כ לזוג:</label>
-                        <input type="text" id="gen-price-couple" placeholder="לדוגמה: 4,500₪"
-                            oninput="generateDealPost()">
-                    </div>
-                    <div class="form-group">
-                        <label>👨‍👩‍👧‍👦 מחיר למשפחה:</label>
-                        <input type="text" id="gen-price-family" placeholder="לדוגמה: 7,200₪"
-                            oninput="generateDealPost()">
-                    </div>
-                    <div class="form-group">
-                        <label>👥 מחיר מיוחד לקבוצה:</label>
-                        <input type="text" id="gen-price-group" placeholder="לדוגמה: בהרשמה מוקדמת..."
-                            oninput="generateDealPost()">
-                    </div>
-                </div>
-
-                <!-- 6. בנק הפיצ'רים המהירים (V) -->
-                <div class="features-box">
-                    <h4>✨ יתרונות ופיצ'רים באזור המלון:</h4>
-                    <div class="checkbox-grid">
-                        <label><input type="checkbox" value="✡️ דקה הליכה מבית חב״ד" onchange="generateDealPost()"> בית
-                            חב״ד</label>
-                        <label><input type="checkbox" value="✡️ קרוב לבית כנסת פעיל ומרכזי"
-                                onchange="generateDealPost()"> בית כנסת</label>
-                        <label><input type="checkbox" value="✡️ נמצא בלב הרובע היהודי" onchange="generateDealPost()">
-                            רובע יהודי</label>
-                        <label><input type="checkbox" value="🎰 מלון עם קזינו פעיל" onchange="generateDealPost()"> קזינו
-                            פעיל</label>
-                        <label><input type="checkbox" value="🏖️ קרוב לחוף הים וטיילת" onchange="generateDealPost()">
-                            חוף הים</label>
-                        <label><input type="checkbox" value="🏊‍♂️ בריכה מפנקת במלון" onchange="generateDealPost()">
-                            בריכה במלון</label>
-                        <label><input type="checkbox" value="🧖‍♂️ מרכז ספא, ג'קוזי וסאונה במלון"
-                                onchange="generateDealPost()"> ספא וסאונה</label>
-                        <label><input type="checkbox" value="🏋🏽 חדר כושר מאובזר במלון" onchange="generateDealPost()">
-                            חדר כושר</label>
-                        <label><input type="checkbox" value="📌 מלון במיקום מרכזי בעיר" onchange="generateDealPost()">
-                            מיקום מרכזי</label>
-                        <label><input type="checkbox" value="🚇 קרוב לתחנת מטרו / רכבת" onchange="generateDealPost()">
-                            תחנת מטרו</label>
-                        <label><input type="checkbox" value="💕 מלון בוטיק רומנטי לזוגות" onchange="generateDealPost()">
-                            מלון לזוגות</label>
-                        <label><input type="checkbox" value="👨‍👩‍👧‍👦 מומלץ במיוחד למשפחות"
-                                onchange="generateDealPost()"> מומלץ למשפחות</label>
-                        <label><input type="checkbox" value="🇮🇱 טיסות ישירות / ישראליות"
-                                onchange="generateDealPost()"> טיסות ישירות</label>
-                        <label><input type="checkbox" value="🧳 כולל תיק גב וטרולי לנוסע" onchange="generateDealPost()">
-                            תיק גב וטרולי</label>
-                        <label><input type="checkbox" value="🧳 כולל מזוודה 20 ק״ג לבטן המטוס"
-                                onchange="generateDealPost()"> מזוודה 20 ק״ג</label>
-                    </div>
-
-                    <div class="form-group" style="margin-top: 15px;">
-                        <label>➕ תוספת חופשית משלך:</label>
-                        <input type="text" id="gen-custom-feature" placeholder="לדוגמה: כולל כניסה חינם לפארק מים"
-                            oninput="generateDealPost()">
-                    </div>
-                </div>
-
+            <div class="form-group">
+                <label>קישור קבוצת וואטסאפ / דילים (הגדרות סוכן):</label>
+                <input type="text" id="agentGroupLink" placeholder="לדוגמה: https://chat.whatsapp.com/..."
+                    oninput="updatePreview()">
             </div>
 
-            <!-- עמודת תצוגה מקדימה חיה (Live Preview) והעתקה -->
-            <div class="deal-preview-section">
-                <h3>📱 תצוגה מקדימה חיה לוואטסאפ</h3>
-                <div class="preview-box" id="deal-preview-output">
-                    הפוסט יופיע כאן אוטומטית בזמן שתזין נתונים...
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label>שם היעד (מדינה):</label>
+                    <input type="text" id="destinationCountry" placeholder="לדוגמה: קפריסין" oninput="updatePreview()">
                 </div>
-                <button type="button" class="copy-btn-main" onclick="copyDealPost()">📋 העתק פוסט מושלם
-                    לוואטסאפ</button>
+                <div class="form-group">
+                    <label>שם העיר / אזור:</label>
+                    <input type="text" id="destinationCity" placeholder="לדוגמה: איה נאפה" oninput="updatePreview()">
+                </div>
             </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label>שם המלון:</label>
+                    <input type="text" id="hotelName" placeholder="שם המלון..." oninput="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label>דירוג כוכבים:</label>
+                    <select id="hotelStars" onchange="updatePreview()">
+                        <option value="3">⭐⭐⭐ (3 כוכבים)</option>
+                        <option value="4" selected>⭐⭐⭐⭐ (4 כוכבים)</option>
+                        <option value="5">⭐⭐⭐⭐⭐ (5 כוכבים)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label>תאריך התחלה:</label>
+                    <input type="date" id="startDate" onchange="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label>תאריך סיום:</label>
+                    <input type="date" id="endDate" onchange="updatePreview()">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>מחיר לאדם (₪):</label>
+                <input type="text" id="price" placeholder="לדוגמה: 1850" oninput="updatePreview()">
+            </div>
+        </div>
+
+        <!-- תצוגה מקדימה -->
+        <div class="card">
+            <h2>📱 תצוגה מקדימה לפוסט</h2>
+            <div class="preview-box" id="previewText">הזן פרטים כדי לראות את הפוסט מתעדכן אוטומטית...</div>
+            <button class="btn" onclick="copyToClipboard()">📋 העתק פוסט מושלם לוואטסאפ</button>
         </div>
     </div>
 
     <script>
-        function getHebrewDayName(dateString) {
-            const days = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
-            const date = new Date(dateString);
-            return days[date.getDay()];
+        // זיהוי דגל אוטומטי לפי שם המדינה
+        function getFlag(country) {
+            if (!country) return '✈️';
+            const c = country.trim();
+            if (c.includes('קפריסין')) return '🇨🇾';
+            if (c.includes('יוון')) return '🇬🇷';
+            if (c.includes('איטליה')) return '🇮🇹';
+            if (c.includes('ספרד')) return '🇪🇸';
+            if (c.includes('טורקיה')) return '🇹🇷';
+            if (c.includes('דובאי') || c.includes('איחוד')) return '🇦🇪';
+            if (c.includes('צרפת')) return '🇫🇷';
+            return '✈️';
         }
 
-        function formatDateToIL(dateString) {
-            if (!dateString) return '';
-            const parts = dateString.split('-');
-            if (parts.length !== 3) return dateString;
-            return `${parts[2]}.${parts[1]}.${parts[0].slice(-2)}`;
+        function updatePreview() {
+            const country = document.getElementById('destinationCountry').value.trim();
+            const city = document.getElementById('destinationCity').value.trim();
+            const hotel = document.getElementById('hotelName').value.trim();
+            const starsNum = document.getElementById('hotelStars').value;
+            const start = document.getElementById('startDate').value;
+            const end = document.getElementById('endDate').value;
+            const price = document.getElementById('price').value.trim();
+            const groupLink = document.getElementById('agentGroupLink').value.trim();
+
+            const flag = getFlag(country);
+            const starsStr = '⭐'.repeat(Number(starsNum));
+
+            let locationLine = '';
+            if (country && city) {
+                locationLine = `${flag} יעד: ${country} - ${city} ${flag}`;
+            } else if (country || city) {
+                locationLine = `${flag} יעד: ${country}${city} ${flag}`;
+            } else {
+                locationLine = `✈️ יעד: לבחירתכם`;
+            }
+
+            let hotelLine = hotel ? `🏨 מלון: ${hotel} ${starsStr}` : `🏨 מלון: לבחירה`;
+            let dateLine = (start && end) ? `📅 תאריכים: ${start} עד ${end}` : `📅 תאריכים: בהתאמה אישית`;
+            let priceLine = price ? `💰 מחיר לאדם: ₪${price}` : `💰 מחיר: פנו אלינו`;
+            let linkLine = groupLink ? `🔗 להצטרפות לקבוצת הדילים שלנו:\n${groupLink}` : `🔗 פנו אלינו בוואטסאפ לפרטים נוספים!`;
+
+            const finalPost = `🔥 דיל חם שאסור לפפס! 🔥
+
+${locationLine}
+${hotelLine}
+${dateLine}
+${priceLine}
+
+✨ אל תפספסו את החופשה הבאה שלכם!
+${linkLine}`;
+
+            document.getElementById('previewText').innerText = finalPost;
         }
 
-        function generateDealPost() {
-            const destinationSelect = document.getElementById('gen-destination');
-            const selectedOption = destinationSelect.options[destinationSelect.selectedIndex];
-            const destinationName = destinationSelect.value;
-            const flag = selectedOption.getAttribute('data-flag') || '✈️';
-
-            const dateFrom = document.getElementById('gen-date-from').value;
-            const dateTo = document.getElementById('gen-date-to').value;
-            const hotelName = document.getElementById('gen-hotel-name').value;
-            const hotelLink = document.getElementById('gen-hotel-link').value;
-            const boardBasis = document.getElementById('gen-board').value;
-
-            const priceSingle = document.getElementById('gen-price-single').value;
-            const priceCouple = document.getElementById('gen-price-couple').value;
-            const priceFamily = document.getElementById('gen-price-family').value;
-            const priceGroup = document.getElementById('gen-price-group').value;
-            const customFeature = document.getElementById('gen-custom-feature').value;
-
-            let dateFormattedStr = '';
-            if (dateFrom && dateTo) {
-                const startFormatted = formatDateToIL(dateFrom);
-                const endFormatted = formatDateToIL(dateTo);
-                const startDay = getHebrewDayName(dateFrom);
-                const endDay = getHebrewDayName(dateTo);
-                dateFormattedStr = `${startFormatted} - ${endFormatted} (${startDay}-${endDay})`;
-            }
-
-            const checkboxes = document.querySelectorAll('.features-box input[type="checkbox"]:checked');
-            let featuresList = '';
-            checkboxes.forEach(cb => {
-                featuresList += `⚜️ ${cb.value}\n`;
-            });
-
-            if (customFeature.trim() !== '') {
-                featuresList += `⚜️ ${customFeature}\n`;
-            }
-
-            let pricesText = '';
-            if (priceSingle) pricesText += `👤 מחיר לאדם בהרכב זוגי: *${priceSingle}*\n`;
-            if (priceCouple) pricesText += `👫 מחיר סה״כ לזוג: *${priceCouple}*\n`;
-            if (priceFamily) pricesText += `👨‍👩‍👧‍👦 מחיר למשפחה: *${priceFamily}*\n`;
-            if (priceGroup) pricesText += `👥 מחיר לקבוצה: *${priceGroup}*\n`;
-
-            const agentPhone = localStorage.getItem('agent_phone') || '0500000000';
-            const agentName = localStorage.getItem('agent_name') || 'הסוכן שלך';
-            const agentWhatsappLink = localStorage.getItem('agent_whatsapp') || `https://wa.me/972${agentPhone.replace(/^0/, '')}`;
-            const agentGroupLink = localStorage.getItem('agent_group') || 'https://chat.whatsapp.com/...';
-
-            let finalPost = `🔥 *חשיפה לדיל חדש!* 🔥\n`;
-            if (destinationName) {
-                finalPost += `*${flag} ${destinationName} ${flag}*\n`;
-            }
-
-            if (dateFormattedStr) {
-                finalPost += `⏱️ *תאריכים:* ${dateFormattedStr}\n`;
-            }
-
-            if (hotelName) {
-                finalPost += `\n🏬 *מלון:* ${hotelName}\n`;
-            }
-
-            if (hotelLink) {
-                finalPost += `📸 *לתמונות ופרטים:* ${hotelLink}\n`;
-            }
-
-            if (boardBasis) {
-                finalPost += `🍽️ *בסיס אירוח:* ${boardBasis}\n`;
-            }
-
-            if (featuresList) {
-                finalPost += `\n${featuresList}`;
-            }
-
-            if (pricesText) {
-                finalPost += `\n💰 *מחירון:* \n${pricesText}`;
-            }
-
-            finalPost += `\n⛔ *חשוב לזכור:* המחירים נכונים לשעת הפרסום ועלולים להשתנות בכל עת!\n`;
-            finalPost += `\n👈 *להזמנות ופרטים:* ${agentPhone} (${agentName})\n`;
-            finalPost += `👈 *לשליחת וואטסאפ ישיר:* ${agentWhatsappLink}\n`;
-            if (agentGroupLink) {
-                finalPost += `👈 *לעוד דילים בקבוצה שקטה:* ${agentGroupLink}\n`;
-            }
-
-            document.getElementById('deal-preview-output').innerText = finalPost;
-        }
-
-        function copyHotelName() {
-            const hotelInput = document.getElementById('gen-hotel-name');
-            navigator.clipboard.writeText(hotelInput.value);
-            alert('שם המלון הועתק בהצלחה! 📋');
-        }
-
-        function copyDealPost() {
-            const previewText = document.getElementById('deal-preview-output').innerText;
-            navigator.clipboard.writeText(previewText).then(() => {
-                alert('הפוסט הועתק בהצלחה! עכשיו הדבק אותו בוואטסאפ 🚀');
+        function copyToClipboard() {
+            const text = document.getElementById('previewText').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('הפוסט הועתק בהצלחה ללוח!');
             });
         }
     </script>
