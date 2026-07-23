@@ -561,16 +561,12 @@
                 text = `שלום ${c.clientName || 'לקוח'} 👋\nמצורפים פרטי ההזמנה הרגילה שלך:\n\nסוג הזמנה: ${c.bookingType || '-'}\nPNR: ${c.pnr || '-'}\nמספר טיסה: ${c.flightNumber || '-'}\nיציאה: ${c.departureDate || '-'} | חזרה: ${c.returnDate || '-'}\nמלון: ${c.hotelName || '-'}\nהערות: ${c.notes || '-'}\n\nחופשה מהנה ונעימה! 🌴`;
             }
 
-            // הפתרון המהיר והבטוח ביותר למק: מעתיק לזיכרון ופותח חלון וואטסאפ נקי בלי שגיאות כתובת
-            navigator.clipboard.writeText(text).then(() => {
-                const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
-                // פתיחת וואטסאפ בצורה נקייה לחלוטין ללא שגיאות כתובת ב־Mac
-                const url = phoneNum ? `https://wa.me/${phoneNum}` : `https://web.whatsapp.com`;
-                window.open(url, '_blank');
-            }).catch(() => {
-                const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
-                window.open(phoneNum ? `https://wa.me/${phoneNum}` : `https://web.whatsapp.com`, '_blank');
-            });
+            const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
+            const encodedText = encodeURIComponent(text);
+
+            // חזרה מדויקת לפורמט שעובד חלק ונפתח ישירות בוואטסאפ
+            const targetUrl = phoneNum ? `https://api.whatsapp.com/send?phone=${phoneNum}&text=${encodedText}` : `https://wa.me/?text=${encodedText}`;
+            window.open(targetUrl, '_blank');
         }
 
         function renderClients(clients) {
