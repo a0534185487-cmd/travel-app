@@ -221,8 +221,8 @@
 
     <div class="container">
         <header>
-            <button id="installAppBtn" class="install-btn" style="display:none;" onclick="installApp()">📥 הורד
-                אפליקציה</button>
+            <button id="installAppBtn" class="install-btn" style="display:inline-block;" onclick="installApp()">📥 הורד
+                אפליקציה למכשיר</button>
             <h1>מערכת ניהול הזמנות וסיכומים</h1>
             <p>מערכת מרכזית לסוכני נסיעות</p>
         </header>
@@ -294,8 +294,12 @@
                         <input type="text" name="phone">
                     </div>
                     <div class="form-group">
-                        <label>תאריכים</label>
-                        <input type="text" name="datesSummary" placeholder="לדוגמה: 12/08/2026 - 18/08/2026">
+                        <label>תאריך התחלה (הלוך)</label>
+                        <input type="date" name="startDate" class="auto-date">
+                    </div>
+                    <div class="form-group">
+                        <label>תאריך סיום (חזרה)</label>
+                        <input type="date" name="endDate" class="auto-date">
                     </div>
                     <div class="form-group">
                         <label>יעד</label>
@@ -453,10 +457,11 @@
         function sendWhatsApp(c) {
             let text = '';
             if (c.formType === 'summary') {
+                const datesFormatted = (c.startDate && c.endDate) ? `${c.startDate} - ${c.endDate}` : (c.datesSummary || '-');
                 text = `*סיכום הזמנה עבור: ${c.clientName || 'לקוח'}*
 טלפון: ${c.phone || '-'}
 ----------------------------------
-*תאריכים:* ${c.datesSummary || '-'}
+*תאריכים:* ${datesFormatted}
 *יעד:* ${c.destination || '-'}
 *חברת תעופה:* ${c.airline || '-'}
 *שעת המראה הלוך:* ${c.depFlightTime || '-'}
@@ -487,8 +492,14 @@ PNR: ${c.pnr || '-'}
 
             const encoded = encodeURIComponent(text);
             const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
-            // שימוש בכתובת API אוניברסלית לוואטסאפ שתעבוד תמיד
-            const url = phoneNum ? `https://api.whatsapp.com/send?phone=${phoneNum}&text=${encoded}` : `https://api.whatsapp.com/send?text=${encoded}`;
+
+            // קישור וואטסאפ מתוקן שעובד תמיד בצורה נקייה וישירה
+            let url = '';
+            if (phoneNum) {
+                url = `https://wa.me/${phoneNum}?text=${encoded}`;
+            } else {
+                url = `https://wa.me/?text=${encoded}`;
+            }
             window.open(url, '_blank');
         }
 
@@ -519,7 +530,7 @@ PNR: ${c.pnr || '-'}
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            document.getElementById('installAppBtn').style.display = 'block';
+            document.getElementById('installAppBtn').style.display = 'inline-block';
         });
 
         function installApp() {
@@ -532,7 +543,7 @@ PNR: ${c.pnr || '-'}
                     deferredPrompt = null;
                 });
             } else {
-                alert('ניתן להתקין את האפליקציה דרך תפריט הדפדפן (שלושת הנקודות) ובחר ב-"הוסף למסך הבית" או "Install App".');
+                alert('להתקנה בנייד: פתח את תפריט הדפדפן (שלושת הנקודות) ובחר ב-"הוסף למסך הבית" (Add to Home Screen). במחשב ניתן להתקין דרך סמל ההתקנה בשורת כתובת האתר.');
             }
         }
 
