@@ -433,8 +433,13 @@
         async function deleteClient(id) {
             if (!confirm('האם אתה בטוח שברצונך למחוק?')) return;
             try {
-                await fetch(`/api/clients/${id}`, { method: 'DELETE' });
-                loadClients();
+                const res = await fetch(`/api/clients/${id}`, { method: 'DELETE' });
+                const result = await res.json();
+                if (result.success) {
+                    loadClients();
+                } else {
+                    throw new Error();
+                }
             } catch (e) {
                 allClients = allClients.filter(c => c.id !== id);
                 localStorage.setItem('fallback_clients', JSON.stringify(allClients));
@@ -489,12 +494,17 @@ PNR: ${c.pnr || '-'}
 הערות: ${c.notes || '-'}`;
             }
 
-            const encoded = encodeURIComponent(text);
-            const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
-
-            // פתיחת וואטסאפ בטוחה וישירה שעובדת בצורה מושלמת בלי חסימות
-            let url = phoneNum ? `https://wa.me/${phoneNum}?text=${encoded}` : `https://wa.me/?text=${encoded}`;
-            window.open(url, '_blank');
+            // פתרון מושלם שמעתיק את הטקסט אוטומטי ופותח את וואטסאפ בצורה נקייה בלי שגיאות קישור
+            navigator.clipboard.writeText(text).then(() => {
+                const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
+                let url = phoneNum ? `https://web.whatsapp.com/send?phone=${phoneNum}` : `https://web.whatsapp.com/send`;
+                window.open(url, '_blank');
+                alert('💬 טקסט ההזמנה הועתק אוטומטית לזיכרון!\nהדבק אותו בחלון הווואטסאפ שייפתח (Ctrl+V או Cmd+V).');
+            }).catch(() => {
+                const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
+                let url = phoneNum ? `https://wa.me/${phoneNum}` : `https://wa.me/`;
+                window.open(url, '_blank');
+            });
         }
 
         function renderClients(clients) {
@@ -513,7 +523,7 @@ PNR: ${c.pnr || '-'}
                         <p><strong>עלות/פרטים:</strong> ${c.totalCost || c.notes || '-'}</p>
                     </div>
                     <div class="actions-btns">
-                        <button class="whatsapp-btn" onclick='sendWhatsApp(${JSON.stringify(c)})'>💬 וואטסאפ</button>
+                        <button class="whatsapp-btn" onclick='sendWhatsApp(${JSON.stringify(c).replace(/'/g, "&#39;")})'>💬 וואטסאפ</button>
                         <button class="delete-btn" onclick="deleteClient('${c.id}')">מחק</button>
                     </div>
                 </div>
@@ -533,7 +543,7 @@ PNR: ${c.pnr || '-'}
                     deferredPrompt = null;
                 });
             } else {
-                alert('📱 התקנת האפליקציה למכשיר:\n\n• באייפון (Safari): לחץ על כפתור השיתוף (מרובע עם חץ למעלה) ואז בחר "הוסף למסך הבית".\n• באנדרואיד (Chrome): לחץ על שלוש הנקודות למעלה ובחר "הוסף למסך הבית" או "התקן אפליקציה".\n• במחשב: לחץ על סמל ההתקנה שמופיע בקצה שורת הכתובת למעלה.');
+                alert('📱 התקנת האפליקציה למכשיר:\n\n• במחשב Mac / Windows (Chrome/Edge): לחץ על שלוש הנקודות בדפדפן ובחר "התקן אפליקציה..." (Install App) או סמל ההתקנה בשורת הכתובת.\n• באייפון (Safari): לחץ על כפתור השיתוף ובחר "הוסף למסך הבית".\n• באנדרואיד: לחץ על תפריט הדפדפן ובחר "הוסף למסך הבית".');
             }
         }
 
