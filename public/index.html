@@ -561,10 +561,12 @@
                 text = `שלום ${c.clientName || 'לקוח'} 👋\nמצורפים פרטי ההזמנה הרגילה שלך:\n\nסוג הזמנה: ${c.bookingType || '-'}\nPNR: ${c.pnr || '-'}\nמספר טיסה: ${c.flightNumber || '-'}\nיציאה: ${c.departureDate || '-'} | חזרה: ${c.returnDate || '-'}\nמלון: ${c.hotelName || '-'}\nהערות: ${c.notes || '-'}\n\nחופשה מהנה ונעימה! 🌴`;
             }
 
-            const phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
-            const encodedText = encodeURIComponent(text);
+            let phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
+            if (phoneNum.startsWith('0')) {
+                phoneNum = '972' + phoneNum.substring(1);
+            }
 
-            // חזרה מדויקת לפורמט שעובד חלק ונפתח ישירות בוואטסאפ
+            const encodedText = encodeURIComponent(text);
             const targetUrl = phoneNum ? `https://api.whatsapp.com/send?phone=${phoneNum}&text=${encodedText}` : `https://wa.me/?text=${encodedText}`;
             window.open(targetUrl, '_blank');
         }
