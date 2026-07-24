@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="he" dir="rtl">
 
 <head>
@@ -121,6 +121,7 @@
             max-height: 550px;
             overflow-y: auto;
             direction: rtl;
+            line-height: 1.5;
         }
 
         .btn {
@@ -162,7 +163,7 @@
             <a href="index.html" class="back-link">← חזרה ללוח בקרה הראשי (CRM)</a>
         </div>
 
-        <!-- צד שמאל / עליון: הזנת נתונים -->
+        <!-- צד שמאל: הזנת נתונים -->
         <div>
             <!-- הגדרות סוכן קבועות -->
             <div class="card" style="border: 2px dashed var(--primary);">
@@ -170,17 +171,17 @@
                 <div class="form-group">
                     <label>👈 להזמנות חייגו עכשיו (קישור / טלפון):</label>
                     <input type="text" id="agentCall" placeholder="לדוגמה: tel:0500000000 או קישור"
-                        oninput="saveSettings()">
+                        oninput="saveAllData()">
                 </div>
                 <div class="form-group">
                     <label>👈 לשליחת ווצאפ (קישור ישיר):</label>
                     <input type="text" id="agentWhatsapp" placeholder="לדוגמה: https://wa.me/972500000000"
-                        oninput="saveSettings()">
+                        oninput="saveAllData()">
                 </div>
                 <div class="form-group">
                     <label>👈 לעוד דילים בקבוצה שקטה:</label>
                     <input type="text" id="agentGroup" placeholder="לדוגמה: https://chat.whatsapp.com/..."
-                        oninput="saveSettings()">
+                        oninput="saveAllData()">
                 </div>
             </div>
 
@@ -192,23 +193,22 @@
                     <div class="form-group">
                         <label>שם היעד (מדינה):</label>
                         <input type="text" id="destinationCountry" placeholder="לדוגמה: קפריסין"
-                            oninput="updatePreview()">
+                            oninput="saveAllData()">
                     </div>
                     <div class="form-group">
                         <label>שם העיר / אזור:</label>
-                        <input type="text" id="destinationCity" placeholder="לדוגמה: איה נאפה"
-                            oninput="updatePreview()">
+                        <input type="text" id="destinationCity" placeholder="לדוגמה: איה נאפה" oninput="saveAllData()">
                     </div>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
                     <div class="form-group">
                         <label>שם המלון:</label>
-                        <input type="text" id="hotelName" placeholder="שם המלון..." oninput="updatePreview()">
+                        <input type="text" id="hotelName" placeholder="שם המלון..." oninput="saveAllData()">
                     </div>
                     <div class="form-group">
                         <label>דירוג כוכבים:</label>
-                        <select id="hotelStars" onchange="updatePreview()">
+                        <select id="hotelStars" onchange="saveAllData()">
                             <option value="3">⭐⭐⭐ (3 כוכבים)</option>
                             <option value="4" selected>⭐⭐⭐⭐ (4 כוכבים)</option>
                             <option value="5">⭐⭐⭐⭐⭐ (5 כוכבים)</option>
@@ -219,13 +219,13 @@
                 <div class="form-group">
                     <label>🔗 קישור לתמונות המלון:</label>
                     <input type="text" id="hotelImagesLink" placeholder="הדבק קישור לתמונות/גלריה של המלון..."
-                        oninput="updatePreview()">
+                        oninput="saveAllData()">
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
                     <div class="form-group">
                         <label>חודש:</label>
-                        <select id="dealMonth" onchange="updatePreview()">
+                        <select id="dealMonth" onchange="saveAllData()">
                             <option value="ינואר">ינואר</option>
                             <option value="פברואר">פברואר</option>
                             <option value="מרץ">מרץ</option>
@@ -242,18 +242,18 @@
                     </div>
                     <div class="form-group">
                         <label>תאריך התחלה:</label>
-                        <input type="date" id="startDate" onchange="updatePreview()">
+                        <input type="date" id="startDate" onchange="saveAllData()">
                     </div>
                     <div class="form-group">
                         <label>תאריך סיום:</label>
-                        <input type="date" id="endDate" onchange="updatePreview()">
+                        <input type="date" id="endDate" onchange="saveAllData()">
                     </div>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                     <div class="form-group">
                         <label>בסיס פנסיון:</label>
-                        <select id="boardBasis" onchange="updatePreview()">
+                        <select id="boardBasis" onchange="saveAllData()">
                             <option value="לינה וארוחת בוקר">לינה וארוחת בוקר</option>
                             <option value="חצי פנסיון">חצי פנסיון</option>
                             <option value="הכל כלול">הכל כלול</option>
@@ -262,7 +262,7 @@
                     </div>
                     <div class="form-group">
                         <label>העברות:</label>
-                        <select id="transfers" onchange="updatePreview()">
+                        <select id="transfers" onchange="saveAllData()">
                             <option value="כולל העברות">🚐 כולל העברות</option>
                             <option value="ללא העברות">ללא העברות</option>
                         </select>
@@ -276,16 +276,16 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                     <div class="form-group">
                         <label>🛫 טיסה הלוך (שעה/פרטים):</label>
-                        <input type="text" id="flightOut" placeholder="לדוגמה: 06:00 בבוקר" oninput="updatePreview()">
+                        <input type="text" id="flightOut" placeholder="לדוגמה: 06:00 בבוקר" oninput="saveAllData()">
                     </div>
                     <div class="form-group">
                         <label>🛬 טיסה חזור (שעה/פרטים):</label>
-                        <input type="text" id="flightBack" placeholder="לדוגמה: 22:00 בלילה" oninput="updatePreview()">
+                        <input type="text" id="flightBack" placeholder="לדוגמה: 22:00 בלילה" oninput="saveAllData()">
                     </div>
                 </div>
                 <div class="form-group">
                     <label>🧳 בחירת סוג כבודה:</label>
-                    <select id="luggageType" onchange="updatePreview()">
+                    <select id="luggageType" onchange="saveAllData()">
                         <option value="טרולי לכל נוסע">🎒 טרולי לכל נוסע</option>
                         <option value="מזוודה לכל נוסע">🧳 מזוודה לכל נוסע</option>
                         <option value="כולל מזוודה או תיק גב">🧳 כולל מזוודה או תיק גב</option>
@@ -295,7 +295,7 @@
                 </div>
                 <div class="form-group" id="customLuggageDiv" style="display:none;">
                     <label>כתיבה חופשית לכבודה:</label>
-                    <input type="text" id="customLuggage" placeholder="הקלד פרטי כבודה..." oninput="updatePreview()">
+                    <input type="text" id="customLuggage" placeholder="הקלד פרטי כבודה..." oninput="saveAllData()">
                 </div>
             </div>
 
@@ -305,7 +305,7 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                     <div class="form-group">
                         <label>סוג הרכב מחיר:</label>
-                        <select id="priceType" onchange="updatePreview()">
+                        <select id="priceType" onchange="saveAllData()">
                             <option value="לאדם (בהרכב זוגי)">לאדם (בהרכב זוגי)</option>
                             <option value="לזוג">לזוג</option>
                             <option value="למשפחה">למשפחה</option>
@@ -314,7 +314,7 @@
                     </div>
                     <div class="form-group">
                         <label>מחיר ב-₪:</label>
-                        <input type="text" id="priceValue" placeholder="לדוגמה: 2250" oninput="updatePreview()">
+                        <input type="text" id="priceValue" placeholder="לדוגמה: 2250" oninput="saveAllData()">
                     </div>
                 </div>
             </div>
@@ -324,38 +324,37 @@
                 <h2>✨ בנק פיצ'רים חכמים מורחב</h2>
                 <div class="checkbox-group" id="featuresBank">
                     <label class="checkbox-item"><input type="checkbox" class="smart-feature"
-                            value="⚜️ מלון במיקום מרכזי" checked onchange="updatePreview()"> מלון במיקום מרכזי</label>
+                            value="⚜️ מלון במיקום מרכזי" checked onchange="saveAllData()"> מלון במיקום מרכזי</label>
                     <label class="checkbox-item"><input type="checkbox" class="smart-feature" value="⚜️ בר במלון"
-                            onchange="updatePreview()"> בר במלון</label>
+                            onchange="saveAllData()"> בר במלון</label>
                     <label class="checkbox-item"><input type="checkbox" class="smart-feature" value="⚜️ מרכז ספא במלון"
-                            onchange="updatePreview()"> מרכז ספא במלון</label>
+                            onchange="saveAllData()"> מרכז ספא במלון</label>
                     <label class="checkbox-item"><input type="checkbox" class="smart-feature" value="⚜️ בריכה במלון"
-                            onchange="updatePreview()"> בריכה במלון</label>
+                            onchange="saveAllData()"> בריכה במלון</label>
                     <label class="checkbox-item"><input type="checkbox" class="smart-feature"
-                            value="⚜️ טיסות ישראליות🇮🇱" checked onchange="updatePreview()"> טיסות ישראליות
-                        🇮🇱</label>
+                            value="⚜️ טיסות ישראליות🇮🇱" checked onchange="saveAllData()"> טיסות ישראליות 🇮🇱</label>
                     <label class="checkbox-item"><input type="checkbox" class="smart-feature" value="🌊 נוף מרהיב לים"
-                            onchange="updatePreview()"> נוף מרהיב לים</label>
+                            onchange="saveAllData()"> נוף מרהיב לים</label>
                     <label class="checkbox-item"><input type="checkbox" class="smart-feature"
-                            value="🍹 בר חטיפים ובריכה פעיל" onchange="updatePreview()"> בר חטיפים ובריכה</label>
+                            value="🍹 בר חטיפים ובריכה פעיל" onchange="saveAllData()"> בר חטיפים ובריכה</label>
                     <label class="checkbox-item"><input type="checkbox" class="smart-feature"
-                            value=" Wi-Fi חינם בכל שטחי המלון" checked onchange="updatePreview()"> Wi-Fi חינם</label>
+                            value=" Wi-Fi חינם בכל שטחי המלון" checked onchange="saveAllData()"> Wi-Fi חינם</label>
                     <label class="checkbox-item"><input type="checkbox" class="smart-feature"
-                            value="🛎️ שירות קבלה 24/7" onchange="updatePreview()"> קבלה 24/7</label>
+                            value="🛎️ שירות קבלה 24/7" onchange="saveAllData()"> קבלה 24/7</label>
                     <label class="checkbox-item"><input type="checkbox" class="smart-feature"
-                            value="👨‍👩‍👧‍👦 מתאים מאוד למשפחות וזוגות" onchange="updatePreview()"> מתאים
+                            value="👨‍👩‍👧‍👦 מתאים מאוד למשפחות וזוגות" onchange="saveAllData()"> מתאים
                         למשפחות/זוגות</label>
                     <label class="checkbox-item"><input type="checkbox" class="smart-feature"
-                            value="⚡ מקומות אחרונים במחיר הזה!" checked onchange="updatePreview()"> מקומות
+                            value="⚡ מקומות אחרונים במחיר הזה!" checked onchange="saveAllData()"> מקומות
                         אחרונים!</label>
                     <label class="checkbox-item"><input type="checkbox" class="smart-feature"
-                            value="🎯 בלעדי ללקוחות הדילים שלנו" onchange="updatePreview()"> בלעדי לחברי הקבוצה</label>
+                            value="🎯 בלעדי ללקוחות הדילים שלנו" onchange="saveAllData()"> בלעדי לחברי הקבוצה</label>
                 </div>
 
                 <div class="form-group" style="margin-top: 15px;">
                     <label>📝 שורת טקסט חופשי לבחירת הסוכן:</label>
                     <input type="text" id="agentCustomNote" placeholder="הקלד כאן הערה אישית משלך שתופיע בפוסט..."
-                        oninput="updatePreview()">
+                        oninput="saveAllData()">
                 </div>
             </div>
         </div>
@@ -371,18 +370,34 @@
     </div>
 
     <script>
-        // טעינת הגדרות סוכן שמורות בעלייה
+        // טעינת נתונים שמורים בלחיצה ראשונה על העמוד
         window.onload = function () {
-            if (localStorage.getItem('agentCall')) document.getElementById('agentCall').value = localStorage.getItem('agentCall');
-            if (localStorage.getItem('agentWhatsapp')) document.getElementById('agentWhatsapp').value = localStorage.getItem('agentWhatsapp');
-            if (localStorage.getItem('agentGroup')) document.getElementById('agentGroup').value = localStorage.getItem('agentGroup');
+            const fields = ['agentCall', 'agentWhatsapp', 'agentGroup', 'destinationCountry', 'destinationCity', 'hotelName', 'hotelStars', 'hotelImagesLink', 'dealMonth', 'startDate', 'endDate', 'boardBasis', 'transfers', 'flightOut', 'flightBack', 'luggageType', 'customLuggage', 'priceType', 'priceValue', 'agentCustomNote'];
+
+            fields.forEach(id => {
+                if (localStorage.getItem(id) !== null) {
+                    const el = document.getElementById(id);
+                    if (el) el.value = localStorage.getItem(id);
+                }
+            });
+
+            // הצגת שדה כבודה מותאם אם נבחר
+            if (document.getElementById('luggageType').value === 'custom') {
+                document.getElementById('customLuggageDiv').style.display = 'block';
+            }
+
             updatePreview();
         };
 
-        function saveSettings() {
-            localStorage.setItem('agentCall', document.getElementById('agentCall').value);
-            localStorage.setItem('agentWhatsapp', document.getElementById('agentWhatsapp').value);
-            localStorage.setItem('agentGroup', document.getElementById('agentGroup').value);
+        // שמירת כל הנתונים ל-localStorage אוטומטית בכל שינוי
+        function saveAllData() {
+            const fields = ['agentCall', 'agentWhatsapp', 'agentGroup', 'destinationCountry', 'destinationCity', 'hotelName', 'hotelStars', 'hotelImagesLink', 'dealMonth', 'startDate', 'endDate', 'boardBasis', 'transfers', 'flightOut', 'flightBack', 'luggageType', 'customLuggage', 'priceType', 'priceValue', 'agentCustomNote'];
+
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) localStorage.setItem(id, el.value);
+            });
+
             updatePreview();
         }
 
@@ -400,11 +415,10 @@
             return '✈️';
         }
 
-        // הצגה/הסתרת שדה כבודה מותאם אישית
         document.getElementById('luggageType').addEventListener('change', function () {
             const customDiv = document.getElementById('customLuggageDiv');
             customDiv.style.display = (this.value === 'custom') ? 'block' : 'none';
-            updatePreview();
+            saveAllData();
         });
 
         function updatePreview() {
@@ -438,7 +452,6 @@
             const flag = getFlag(country);
             const starsStr = '⭐'.repeat(Number(starsNum));
 
-            // בניית שורת יעד
             let locationLine = '';
             if (country && city) {
                 locationLine = `${flag} יעד: ${country} - ${city} ${flag}`;
@@ -448,11 +461,9 @@
                 locationLine = `✈️ יעד: לבחירתכם`;
             }
 
-            // בניית שורת מלון ותמונות
             let hotelLine = hotel ? `🏨 מלון: ${hotel} ${starsStr}` : `🏨 מלון: לבחירה`;
             let imagesLine = imagesLink ? `📸 תמונות המלון: ${imagesLink}` : '';
 
-            // בניית שורת תאריכים נקייה
             let dateLine = '';
             if (start && end) {
                 dateLine = `📅 תאריכים: ${start} עד ${end} (${month})`;
@@ -460,7 +471,6 @@
                 dateLine = `📅 חודש: ${month}`;
             }
 
-            // טיסות
             let flightBlock = '';
             if (flightOut || flightBack || luggageText) {
                 flightBlock = `✈️ טיסות:
@@ -469,12 +479,10 @@
 🧳 כבודה: ${luggageText || 'כלול'}`;
             }
 
-            // פיצ'רים נבחרים מהבנק
             const selectedFeatures = Array.from(document.querySelectorAll('.smart-feature:checked'))
                 .map(cb => `${cb.value}`)
                 .join('\n');
 
-            // סיכום מחיר חכם
             let priceSummaryLine = '';
             if (priceVal) {
                 priceSummaryLine = `👌 טיסה + מלון ו${board}: ₪${priceVal} ${priceType}`;
@@ -482,24 +490,27 @@
                 priceSummaryLine = `👌 חבילת נופש מושלמת - פנו אלינו למחיר!`;
             }
 
-            // קביעת חוליות קישורי סוכן
             let contactBlock = '';
             if (agentCall) contactBlock += `\n👈 להזמנות חייגו עכשיו: ${agentCall}`;
             if (agentWhatsapp) contactBlock += `\n👈 לשליחת ווצאפ: ${agentWhatsapp}`;
             if (agentGroup) contactBlock += `\n👈 לעוד דילים בקבוצה שקטה: ${agentGroup}`;
 
-            // הרכבת הפוסט הסופי המלא
+            // הרכבת הפוסט עם מרווחים כפולים (רווח נעים ונקי לקריאה)
             const finalPost = `🔥 דיל חם שאסור לפספס בחודש ${month}! 🔥
 
 ${locationLine}
+
 ${hotelLine}
-${imagesLine ? imagesLine + '\n' : ''}${dateLine}
+
+${imagesLine ? imagesLine + '\n\n' : ''}${dateLine}
+
 🍽️ בסיס אירוח: ${board}
+
 🚐 ${transfers}
 
-${flightBlock}
-
+${flightBlock ? flightBlock + '\n' : ''}
 ${selectedFeatures}
+
 ${customNote ? '\n💬 ' + customNote + '\n' : ''}
 💰 מחיר:
 ${priceSummaryLine}
@@ -512,7 +523,6 @@ ${contactBlock}
 לדילים נוספים ניתן לפנות בפרטי! אני כאן כדי להתאים את הדיל בדיוק לצרכים ולרצונות שלך. 💬✈️
 בוא נבנה יחד את החופשה המושלמת עבורך! 🌟`;
 
-            // ניקוי שורות ריקות מיותרות אם יש
             document.getElementById('previewText').innerText = finalPost.replace(/^\s*[\r\n]/gm, '');
         }
 

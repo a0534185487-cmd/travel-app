@@ -16,6 +16,7 @@
             --primary: #dc2626;
             --primary-hover: #b91c1c;
             --input-bg: #ffffff;
+            --success: #059669;
         }
 
         * {
@@ -208,6 +209,8 @@
             cursor: pointer;
             text-align: center;
             transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .tab-btn.active {
@@ -288,6 +291,15 @@
             background: var(--primary-hover);
         }
 
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #047857;
+        }
+
         .btn-danger {
             background: #fef2f2;
             color: var(--primary);
@@ -326,6 +338,74 @@
             font-size: 11px;
             font-weight: 700;
             margin-right: 10px;
+        }
+
+        /* מודל (חלון צפייה בפרטים) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 14px;
+        }
+
+        .detail-row span:first-child {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .detail-row span:last-child {
+            color: var(--text-main);
+            font-weight: 700;
+            text-align: left;
         }
 
         @media(max-width: 900px) {
@@ -444,88 +524,80 @@
                             <a href="generator.html" class="tab-btn">🚀 מחולל דילים</a>
                         </div>
 
+                        <!-- טופס הזמנה רגילה -->
                         <form id="standardForm" class="form-section active" onsubmit="saveClient(event, 'standard')">
                             <input type="hidden" name="formType" value="standard">
                             <div class="grid">
-                                <div class="form-group">
-                                    <label>שם הלקוח</label>
-                                    <input type="text" name="clientName" required placeholder="שם מלא...">
-                                </div>
-                                <div class="form-group">
-                                    <label>טלפון</label>
-                                    <input type="text" name="phone" placeholder="050-0000000">
-                                </div>
-                                <div class="form-group">
-                                    <label>סוג הזמנה</label>
-                                    <select name="bookingType">
+                                <div class="form-group"><label>שם הלקוח</label><input type="text" name="clientName"
+                                        required placeholder="שם מלא..." oninput="saveFormDraft('standard')"></div>
+                                <div class="form-group"><label>טלפון</label><input type="text" name="phone"
+                                        placeholder="050-0000000" oninput="saveFormDraft('standard')"></div>
+                                <div class="form-group"><label>סוג הזמנה</label><select name="bookingType"
+                                        onchange="saveFormDraft('standard')">
                                         <option value="flight_hotel">טיסה + מלון</option>
                                         <option value="flight">טיסה בלבד</option>
                                         <option value="hotel">מלון בלבד</option>
-                                    </select>
+                                    </select></div>
+                                <div class="form-group"><label>מספר PNR</label><input type="text" name="pnr"
+                                        placeholder="קוד הזמנה..." oninput="saveFormDraft('standard')"></div>
+                                <div class="form-group"><label>מספר טיסה</label><input type="text" name="flightNumber"
+                                        oninput="saveFormDraft('standard')"></div>
+                                <div class="form-group"><label>תאריך יציאה</label><input type="date"
+                                        name="departureDate" class="auto-date" onchange="saveFormDraft('standard')">
                                 </div>
-                                <div class="form-group">
-                                    <label>מספר PNR</label>
-                                    <input type="text" name="pnr" placeholder="קוד הזמנה...">
-                                </div>
-                                <div class="form-group">
-                                    <label>מספר טיסה</label>
-                                    <input type="text" name="flightNumber">
-                                </div>
-                                <div class="form-group">
-                                    <label>תאריך יציאה</label>
-                                    <input type="date" name="departureDate" class="auto-date">
-                                </div>
-                                <div class="form-group">
-                                    <label>תאריך חזרה</label>
-                                    <input type="date" name="returnDate" class="auto-date">
-                                </div>
-                                <div class="form-group">
-                                    <label>שם המלון</label>
-                                    <input type="text" name="hotelName">
-                                </div>
+                                <div class="form-group"><label>תאריך חזרה</label><input type="date" name="returnDate"
+                                        class="auto-date" onchange="saveFormDraft('standard')"></div>
+                                <div class="form-group"><label>שם המלון</label><input type="text" name="hotelName"
+                                        oninput="saveFormDraft('standard')"></div>
                             </div>
-                            <div class="form-group">
-                                <label>הערות</label>
-                                <textarea name="notes"></textarea>
-                            </div>
+                            <div class="form-group"><label>הערות</label><textarea name="notes"
+                                    oninput="saveFormDraft('standard')"></textarea></div>
                             <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">שמור הזמנה
                                 רגילה</button>
                         </form>
 
+                        <!-- טופס סיכום הזמנה מפורט -->
                         <form id="summaryForm" class="form-section" onsubmit="saveClient(event, 'summary')">
                             <input type="hidden" name="formType" value="summary">
                             <div class="grid">
                                 <div class="form-group"><label>שם הלקוח</label><input type="text" name="clientName"
-                                        required></div>
-                                <div class="form-group"><label>טלפון</label><input type="text" name="phone"></div>
+                                        required oninput="saveFormDraft('summary')"></div>
+                                <div class="form-group"><label>טלפון</label><input type="text" name="phone"
+                                        oninput="saveFormDraft('summary')"></div>
                                 <div class="form-group"><label>תאריך התחלה (הלוך)</label><input type="date"
-                                        name="startDate" class="auto-date"></div>
+                                        name="startDate" class="auto-date" onchange="saveFormDraft('summary')"></div>
                                 <div class="form-group"><label>תאריך סיום (חזרה)</label><input type="date"
-                                        name="endDate" class="auto-date"></div>
+                                        name="endDate" class="auto-date" onchange="saveFormDraft('summary')"></div>
                                 <div class="form-group"><label>יעד</label><input type="text" name="destination"
-                                        placeholder="לדוגמה: פריז"></div>
-                                <div class="form-group"><label>חברת תעופה</label><input type="text" name="airline">
-                                </div>
+                                        placeholder="לדוגמה: פריז" oninput="saveFormDraft('summary')"></div>
+                                <div class="form-group"><label>חברת תעופה</label><input type="text" name="airline"
+                                        oninput="saveFormDraft('summary')"></div>
                                 <div class="form-group"><label>שעת המראה הלוך</label><input type="text"
-                                        name="depFlightTime" placeholder="08:30"></div>
-                                <div class="form-group"><label>שעת המראה חזור</label><input type="text"
-                                        name="retFlightTime" placeholder="19:45"></div>
-                                <div class="form-group"><label>מזוודות כלולות</label><input type="text"
-                                        name="luggageDetails" placeholder="טרולי + מזוודה"></div>
-                                <div class="form-group" style="grid-column: span 2;"><label>שמות נוסעים באנגלית לפי
-                                        דרכון</label><textarea name="passengersPassports"></textarea></div>
-                                <div class="form-group"><label>שם מלון</label><input type="text" name="hotelName"></div>
-                                <div class="form-group"><label>עיר המלון</label><input type="text" name="hotelCity">
+                                        name="depFlightTime" placeholder="08:30" oninput="saveFormDraft('summary')">
                                 </div>
+                                <div class="form-group"><label>שעת המראה חזור</label><input type="text"
+                                        name="retFlightTime" placeholder="19:45" oninput="saveFormDraft('summary')">
+                                </div>
+                                <div class="form-group"><label>מזוודות כלולות</label><input type="text"
+                                        name="luggageDetails" placeholder="טרולי + מזוודה"
+                                        oninput="saveFormDraft('summary')"></div>
+                                <div class="form-group" style="grid-column: span 2;"><label>שמות נוסעים באנגלית לפי
+                                        דרכון</label><textarea name="passengersPassports"
+                                        oninput="saveFormDraft('summary')"></textarea></div>
+                                <div class="form-group"><label>שם מלון</label><input type="text" name="hotelName"
+                                        oninput="saveFormDraft('summary')"></div>
+                                <div class="form-group"><label>עיר המלון</label><input type="text" name="hotelCity"
+                                        oninput="saveFormDraft('summary')"></div>
                                 <div class="form-group"><label>הרכב חדר</label><input type="text" name="roomComposition"
-                                        placeholder="2 מבוגרים"></div>
+                                        placeholder="2 מבוגרים" oninput="saveFormDraft('summary')"></div>
                                 <div class="form-group"><label>בסיס פנסיון</label><input type="text" name="boardBasis"
-                                        placeholder="הכל כלול"></div>
-                                <div class="form-group"><label>שם חדר</label><input type="text" name="roomName"></div>
+                                        placeholder="הכל כלול" oninput="saveFormDraft('summary')"></div>
+                                <div class="form-group"><label>שם חדר</label><input type="text" name="roomName"
+                                        oninput="saveFormDraft('summary')"></div>
                                 <div class="form-group"><label>תנאי ביטול</label><input type="text"
-                                        name="cancellationTerms"></div>
+                                        name="cancellationTerms" oninput="saveFormDraft('summary')"></div>
                                 <div class="form-group"><label>סה"כ עלות</label><input type="text" name="totalCost"
-                                        placeholder="$1,500"></div>
+                                        placeholder="$1,500" oninput="saveFormDraft('summary')"></div>
                             </div>
                             <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">שמור סיכום הזמנה
                                 מפורט</button>
@@ -563,6 +635,23 @@
         </div>
     </div>
 
+    <!-- חלון צפייה בפרטי הזמנה (Modal) -->
+    <div id="clientModal" class="modal-overlay" onclick="closeClientModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 id="modalTitle">פרטי הזמנה מלאים</h3>
+                <button class="close-modal" onclick="closeClientModal()">×</button>
+            </div>
+            <div id="modalBody">
+                <!-- יוכנס דינמית -->
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-success" id="modalWhatsAppBtn" style="flex: 1;">💬 שלח לוואטסאפ</button>
+                <button class="btn" onclick="closeClientModal()" style="background: var(--text-muted);">סגור</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let allClients = [];
         let currentAgent = '';
@@ -577,6 +666,7 @@
             document.querySelectorAll('.auto-date').forEach(input => {
                 if (!input.value) input.value = today;
             });
+            loadFormDrafts();
         });
 
         function loginUser(event) {
@@ -612,6 +702,7 @@
             document.getElementById('currentAgentName').innerText = currentAgent;
             document.getElementById('sidebarAgentRole').innerText = `סוכן: ${currentAgent}`;
             loadClients();
+            loadFormDrafts();
         }
 
         function switchPage(pageId, el) {
@@ -631,6 +722,37 @@
                 document.querySelectorAll('.tab-btn')[1].classList.add('active');
                 document.getElementById('summaryForm').classList.add('active');
             }
+        }
+
+        // שמירת טיוטה אוטומטית בזמן הקלדה לכל טופס
+        function saveFormDraft(formType) {
+            const form = document.getElementById(formType === 'standard' ? 'standardForm' : 'summaryForm');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            localStorage.setItem(`draft_${currentAgent}_${formType}`, JSON.stringify(data));
+        }
+
+        // טעינת טיוטות שמורות בעלייה
+        function loadFormDrafts() {
+            ['standard', 'summary'].forEach(formType => {
+                const saved = localStorage.getItem(`draft_${currentAgent}_${formType}`);
+                if (saved) {
+                    try {
+                        const data = JSON.parse(saved);
+                        const form = document.getElementById(formType === 'standard' ? 'standardForm' : 'summaryForm');
+                        for (const [key, val] of Object.entries(data)) {
+                            const field = form.elements[key];
+                            if (field) field.value = val;
+                        }
+                    } catch (e) { }
+                }
+            });
+        }
+
+        function clearFormDraft(formType) {
+            localStorage.removeItem(`draft_${currentAgent}_${formType}`);
+            const form = document.getElementById(formType === 'standard' ? 'standardForm' : 'summaryForm');
+            form.reset();
         }
 
         function changePassword(event) {
@@ -668,6 +790,7 @@
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
             data.agent = currentAgent;
+            data.id = 'client_' + Date.now();
 
             try {
                 const res = await fetch('/api/clients', {
@@ -677,21 +800,21 @@
                 });
                 const result = await res.json();
                 if (result.success) {
-                    form.reset();
+                    clearFormDraft(type);
                     loadClients();
                 }
             } catch (e) {
-                data.id = Date.now().toString();
                 allClients.unshift(data);
                 localStorage.setItem(`fallback_clients_${currentAgent}`, JSON.stringify(allClients));
-                form.reset();
+                clearFormDraft(type);
                 renderClients(allClients);
                 updateStats();
             }
+            alert('ההזמנה נשמרה בהצלחה!');
         }
 
         async function deleteClient(id) {
-            if (!confirm('למחוק את ההזמנה?')) return;
+            if (!confirm('למחוק את ההזמנה לצמיתות?')) return;
             try {
                 await fetch(`/api/clients/${id}`, { method: 'DELETE' });
                 loadClients();
@@ -735,12 +858,9 @@
             return diffHours >= 0 && diffHours <= 24;
         }
 
-        function sendWhatsApp(index) {
-            const c = allClients[index];
-            let text = "";
-
+        function getWhatsAppText(c) {
             if (c.formType === 'summary') {
-                text = `שלום ${c.clientName || 'לקוח'} 👋\n` +
+                return `שלום ${c.clientName || 'לקוח'} 👋\n` +
                     `מצורפים פרטי ההזמנה שלך:\n\n` +
                     `✈️ יעד: ${c.destination || '-'}\n` +
                     `📅 תאריכים: ${c.startDate || '-'} עד ${c.endDate || '-'}\n` +
@@ -754,7 +874,7 @@
                     `💰 סה"כ עלות: ${c.totalCost || '-'}\n\n` +
                     `חופשה מהנה ונעימה! 🌴`;
             } else {
-                text = `שלום ${c.clientName || 'לקוח'} 👋\n` +
+                return `שלום ${c.clientName || 'לקוח'} 👋\n` +
                     `הזמנתך נקלטה בהצלחה!\n` +
                     `✈️ סוג: ${c.bookingType || '-'}\n` +
                     `📌 PNR: ${c.pnr || '-'}\n` +
@@ -763,6 +883,12 @@
                     `🏨 מלון: ${c.hotelName || '-'}\n` +
                     `📝 הערות: ${c.notes || '-'}`;
             }
+        }
+
+        function sendWhatsApp(id) {
+            const c = allClients.find(item => item.id === id);
+            if (!c) return;
+            const text = getWhatsAppText(c);
 
             let phoneNum = c.phone ? c.phone.replace(/[^0-9]/g, '') : '';
             if (phoneNum.startsWith('0')) phoneNum = '972' + phoneNum.substring(1);
@@ -774,13 +900,61 @@
             window.open(url, '_blank');
         }
 
+        // הצגת חלון צפייה בפרטי לקוח
+        function viewClientDetails(id) {
+            const c = allClients.find(item => item.id === id);
+            if (!c) return;
+
+            document.getElementById('modalTitle').innerText = `פרטי הזמנה: ${c.clientName || 'לקוח'}`;
+
+            let html = '';
+            for (const [key, val] of Object.entries(c)) {
+                if (key === 'id' || key === 'agent' || !val) continue;
+                let label = key;
+                if (key === 'clientName') label = 'שם הלקוח';
+                if (key === 'phone') label = 'טלפון';
+                if (key === 'formType') label = 'סוג טופס';
+                if (key === 'bookingType') label = 'סוג הזמנה';
+                if (key === 'pnr') label = 'מספר PNR';
+                if (key === 'flightNumber') label = 'מספר טיסה';
+                if (key === 'departureDate') label = 'תאריך יציאה';
+                if (key === 'returnDate') label = 'תאריך חזרה';
+                if (key === 'hotelName') label = 'שם המלון';
+                if (key === 'notes') label = 'הערות';
+                if (key === 'startDate') label = 'תאריך התחלה';
+                if (key === 'endDate') label = 'תאריך סיום';
+                if (key === 'destination') label = 'יעד';
+                if (key === 'airline') label = 'חברת תעופה';
+                if (key === 'depFlightTime') label = 'שעת המראה הלוך';
+                if (key === 'retFlightTime') label = 'שעת המראה חזור';
+                if (key === 'luggageDetails') label = 'מזוודות';
+                if (key === 'passengersPassports') label = 'שמות נוסעים בדרכון';
+                if (key === 'hotelCity') label = 'עיר מלון';
+                if (key === 'roomComposition') label = 'הרכב חדר';
+                if (key === 'boardBasis') label = 'בסיס פנסיון';
+                if (key === 'roomName') label = 'שם חדר';
+                if (key === 'cancellationTerms') label = 'תנאי ביטול';
+                if (key === 'totalCost') label = 'סה"כ עלות';
+
+                html += `<div class="detail-row"><span>${label}:</span><span>${val}</span></div>`;
+            }
+
+            document.getElementById('modalBody').innerHTML = html || '<p>אין נתונים להצגה.</p>';
+            document.getElementById('modalWhatsAppBtn').onclick = () => sendWhatsApp(id);
+            document.getElementById('clientModal').style.display = 'flex';
+        }
+
+        function closeClientModal() {
+            document.getElementById('clientModal').style.display = 'none';
+        }
+
         function renderClients(clients) {
             const container = document.getElementById('clientsContainer');
             if (!clients.length) {
                 container.innerHTML = '<p style="color: var(--text-muted);">אין הזמנות שמורות כרגע.</p>';
                 return;
             }
-            container.innerHTML = clients.map((c, idx) => {
+            container.innerHTML = clients.map((c) => {
                 const flightDate = c.formType === 'summary' ? c.startDate : c.departureDate;
                 const show24h = isFlightWithin24Hours(flightDate);
                 return `
@@ -790,8 +964,9 @@
                         <p style="margin: 3px 0; color: var(--text-muted); font-size: 13px;">טלפון: ${c.phone || '-'}</p>
                         <p style="margin: 3px 0; color: var(--text-muted); font-size: 13px;">יעד/מלון: ${c.destination || c.hotelName || '-'}</p>
                     </div>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn" style="padding: 8px 12px; font-size: 12px; background: #059669;" onclick="sendWhatsApp(${idx})">💬 WhatsApp</button>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                        <button class="btn" style="padding: 8px 12px; font-size: 12px; background: #2563eb;" onclick="viewClientDetails('${c.id}')">🔍 צפה בפרטים</button>
+                        <button class="btn" style="padding: 8px 12px; font-size: 12px; background: #059669;" onclick="sendWhatsApp('${c.id}')">💬 WhatsApp</button>
                         <button class="btn btn-danger" style="padding: 8px 12px; font-size: 12px;" onclick="deleteClient('${c.id}')">מחק</button>
                     </div>
                 </div>`;
